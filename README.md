@@ -1,6 +1,6 @@
-Kumpulan Tugas Praktikum Pemrograman Web Lanjut
+<h1><b>Kumpulan Tugas Praktikum Pemrograman Web Lanjut</b></h1>
 
-Oleh : 
+<h2>Oleh : 
 > Rizkya Salsabila
 > TI - 2D
-> 23 / 2341720056
+> 23 / 2341720056 </h2>
