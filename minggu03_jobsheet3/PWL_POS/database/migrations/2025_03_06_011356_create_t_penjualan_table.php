@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('t_penjualan', function (Blueprint $table) {
-            $table->id();
+            $table->id('penjualan_id');
+            $table->unsignedBigInteger('user_id')->index();
+            $table->string('pembeli', 50);
+            $table->string('penjualan_kode', 20)->unique();
+            $table->dateTime('penjualan_tanggal');
             $table->timestamps();
+
+            //Mendefinisikan ForeignKey pada kolom user_id mengacu pada kolom di tabel 'm_user'
+            $table->foreign('user_id')->references('user_id')->on('m_user')->onDelete('cascade');
         });
     }
 
