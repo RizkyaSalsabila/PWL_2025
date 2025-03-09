@@ -12,14 +12,22 @@ class UserModel extends Model
     // ------------------------------------- *jobsheet 03* -------------------------------------
     protected $table = 'm_user';    //mendefinisikan nama tabel yang digunakan di model ini
     protected $primaryKey = 'user_id';  //mendefinisikan primary key dari tabel yang digunakan
-    // -----------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------snipping
 
     // ------------------------------------- *jobsheet 04* -------------------------------------
     //menyetting agar bisa diisi ketika insert/update data
+    // protected $fillable = [
+    //     'level_id',
+    //     'username', 
+    //     'nama',
+    //     'password'
+    // ];
+
+    //menyetting 3 kolom agar bisa diisi ketika insert/update data
     protected $fillable = [
-        'level_id',
-        'username', 
+        'level_id', 
+        'username',
         'nama',
-        'password'
+        'password'      //^^sebagai solusi
     ];
 }

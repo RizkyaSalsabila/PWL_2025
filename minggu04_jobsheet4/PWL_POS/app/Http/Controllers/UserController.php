@@ -28,13 +28,21 @@ class UserController extends Controller
 
         // UserModel::insert($data); //menambahkan data ke tabel 'm_user'
         // -----------------------------------------------------------------------------------------
-        
+
         // ------------------------------------- *jobsheet 04* -------------------------------------
         //menambahkan data baru ke 'm_user'
+        // $data = [
+        //     'level_id' => 2,
+        //     'username' => 'manager_dua',
+        //     'nama' => 'Manager 2',
+        //     'password' => Hash::make('12345')
+        // ];
+
+        //menambahkan data baru lagi ke 'm_user'
         $data = [
             'level_id' => 2,
-            'username' => 'manager_dua',
-            'nama' => 'Manager 2',
+            'username' => 'manager_tiga',
+            'nama' => 'Manager 3',
             'password' => Hash::make('12345')
         ];
 
