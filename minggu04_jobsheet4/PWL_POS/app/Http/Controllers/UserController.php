@@ -59,5 +59,9 @@ class UserController extends Controller
         //PRAKTIKUM 2.1(2)
         $user = UserModel::where('level_id', 1)->first();       //ambil data pada tabel user berdasarkan kolom 'level_id' pada baris pertama
         return view('user', ['data' => $user]);
+
+        //PRAKTIKUM 2.1(3)
+        $user = UserModel::firstWhere('level_id', 1);       //fungsinya masih sama dengan langkah sebelumnya, namun kode menjadi lebih singkat
+        return view('user', ['data' => $user]);
     } 
 }
