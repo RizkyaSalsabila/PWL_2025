@@ -56,12 +56,18 @@ class UserController extends Controller
         // $user = UserModel::find(1);     //ambil data pada tabel user dengan ID 1
         // return view('user', ['data' => $user]);
 
-        //PRAKTIKUM 2.1(2)
-        $user = UserModel::where('level_id', 1)->first();       //ambil data pada tabel user berdasarkan kolom 'level_id' pada baris pertama
-        return view('user', ['data' => $user]);
+        // //PRAKTIKUM 2.1(2)
+        // $user = UserModel::where('level_id', 1)->first();       //ambil data pada tabel user berdasarkan kolom 'level_id' pada baris pertama
+        // return view('user', ['data' => $user]);
 
-        //PRAKTIKUM 2.1(3)
-        $user = UserModel::firstWhere('level_id', 1);       //fungsinya masih sama dengan langkah sebelumnya, namun kode menjadi lebih singkat
+        // //PRAKTIKUM 2.1(3)
+        // $user = UserModel::firstWhere('level_id', 1);       //fungsinya masih sama dengan langkah sebelumnya, namun kode menjadi lebih singkat
+        // return view('user', ['data' => $user]);
+
+        //PRAKTIKUM 2.1(4)
+        $user = UserModel::findOr(1, ['username', 'nama'], function () {    //penggunaan callback dengan menampilkan 2 kolom pada ID = 1
+            abort(404);     //jika tidak ada data, maka akan tampil 404/not found
+        }); 
         return view('user', ['data' => $user]);
     } 
 }
