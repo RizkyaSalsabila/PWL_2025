@@ -85,8 +85,13 @@ class UserController extends Controller
         // return view('user', ['data' => $user]);
 
         //PRAKTIKUM 2.3(1)
+        // $user = UserModel::where('level_id', 2)->count();       //ambil data pada tabel dengan level_id = 2, dan tampilkan jumlahnya
+        // dd($user);
+        // return view('user', ['data' => $user]);
+
+        //PRAKTIKUM 2.3(2)
         $user = UserModel::where('level_id', 2)->count();       //ambil data pada tabel dengan level_id = 2, dan tampilkan jumlahnya
-        dd($user);
+        // dd($user);
         return view('user', ['data' => $user]);
     } 
 }
