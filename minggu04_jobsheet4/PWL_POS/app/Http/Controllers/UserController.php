@@ -81,7 +81,12 @@ class UserController extends Controller
         // return view('user', ['data' => $user]);
 
         //PRAKTIKUM 2.2(2)
-        $user = UserModel::where('username', 'manager9')->firstOrFail();      //ambil data pada tabel dengan username = manager9
+        // $user = UserModel::where('username', 'manager9')->firstOrFail();      //ambil data pada tabel dengan username = manager9
+        // return view('user', ['data' => $user]);
+
+        //PRAKTIKUM 2.3(1)
+        $user = UserModel::where('level_id', 2)->count();       //ambil data pada tabel dengan level_id = 2, dan tampilkan jumlahnya
+        dd($user);
         return view('user', ['data' => $user]);
     } 
 }
