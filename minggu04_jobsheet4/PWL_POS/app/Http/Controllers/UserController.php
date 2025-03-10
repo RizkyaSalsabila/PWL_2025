@@ -71,9 +71,13 @@ class UserController extends Controller
         // return view('user', ['data' => $user]);
 
         //PRAKTIKUM 2.1(5)
-        $user = UserModel::findOr(20, ['username', 'nama'], function () {       //penggunaan callback dengan menampilkan 2 kolom pada ID = 20
-            abort(404);     //jika tidak ada data, maka akan tampil 404/not found
-        });
+        // $user = UserModel::findOr(20, ['username', 'nama'], function () {       //penggunaan callback dengan menampilkan 2 kolom pada ID = 20
+        //     abort(404);     //jika tidak ada data, maka akan tampil 404/not found
+        // });
+        // return view('user', ['data' => $user]);
+
+        //PRAKTIKUM 2.2(1)
+        $user = UserModel::findOrFail(1);       //ambil data pada tabel dengan ID = 1
         return view('user', ['data' => $user]);
     } 
 }
