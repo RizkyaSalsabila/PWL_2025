@@ -12,11 +12,11 @@ class UserController extends Controller
     {
         // ------------------------------------- *jobsheet 03* -------------------------------------
         //tambah data user dengan Eloquent
-        $data =[
-            'nama' => 'Pelanggan Pertama'
-        ];
+        // $data =[
+        //     'nama' => 'Pelanggan Pertama'
+        // ];
 
-        UserModel::where('username', 'customer-1')->update($data);  //update data user
+        // UserModel::where('username', 'customer-1')->update($data);  //update data user
 
         //Menambahkan data baru menggunakan Eloquent
         // $data = [
@@ -39,17 +39,21 @@ class UserController extends Controller
         // ];
 
         //menambahkan data baru lagi ke 'm_user'
-        $data = [
-            'level_id' => 2,
-            'username' => 'manager_tiga',
-            'nama' => 'Manager 3',
-            'password' => Hash::make('12345')
-        ];
+        // $data = [
+        //     'level_id' => 2,
+        //     'username' => 'manager_tiga',
+        //     'nama' => 'Manager 3',
+        //     'password' => Hash::make('12345')
+        // ];
 
-        UserModel::create($data);
+        // UserModel::create($data);
 
-        //mencoba akses model UserModel
-        $user = UserModel::all();       //ambil semua data dari tabel 'm_user'
+        // //mencoba akses model UserModel
+        // $user = UserModel::all();       //ambil semua data dari tabel 'm_user'
+        // return view('user', ['data' => $user]);
+
+        //PRAKTIKUM 2.1(1)
+        $user = UserModel::find(1);
         return view('user', ['data' => $user]);
     } 
 }
