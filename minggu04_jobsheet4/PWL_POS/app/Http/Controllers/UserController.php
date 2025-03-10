@@ -53,7 +53,11 @@ class UserController extends Controller
         // return view('user', ['data' => $user]);
 
         //PRAKTIKUM 2.1(1)
-        $user = UserModel::find(1);
+        // $user = UserModel::find(1);     //ambil data pada tabel user dengan ID 1
+        // return view('user', ['data' => $user]);
+
+        //PRAKTIKUM 2.1(2)
+        $user = UserModel::where('level_id', 1)->first();       //ambil data pada tabel user berdasarkan kolom 'level_id' pada baris pertama
         return view('user', ['data' => $user]);
     } 
 }
