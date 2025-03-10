@@ -77,7 +77,11 @@ class UserController extends Controller
         // return view('user', ['data' => $user]);
 
         //PRAKTIKUM 2.2(1)
-        $user = UserModel::findOrFail(1);       //ambil data pada tabel dengan ID = 1
+        // $user = UserModel::findOrFail(1);       //ambil data pada tabel dengan ID = 1
+        // return view('user', ['data' => $user]);
+
+        //PRAKTIKUM 2.2(2)
+        $user = UserModel::where('username', 'manager9')->firstOrFail();      //ambil data pada tabel dengan username = manager9
         return view('user', ['data' => $user]);
     } 
 }
