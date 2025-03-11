@@ -41,11 +41,25 @@
             </tr> --}}
             
             {{-- PRAKTIKUM 2.3(2) --}}
-            <tr>
+            {{-- <tr>
                 <td>Jumlah Pengguna</td>
             </tr>
             <tr>
                 <td>{{ $data }}</td>
+            </tr> --}}
+
+            {{-- PRAKTIKUM 2.4(1) --}}
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Nama</th>
+                <th>ID Level Pengguna</th>
+            </tr>
+            <tr>
+                <td>{{ $data->user_id }}</td>
+                <td>{{ $data->username }}</td>
+                <td>{{ $data->nama }}</td>
+                <td>{{ $data->level_id }}</td>
             </tr>
         </table>
 </body>

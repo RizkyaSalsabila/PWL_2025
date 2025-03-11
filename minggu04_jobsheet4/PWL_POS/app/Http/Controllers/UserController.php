@@ -90,8 +90,18 @@ class UserController extends Controller
         // return view('user', ['data' => $user]);
 
         //PRAKTIKUM 2.3(2)
-        $user = UserModel::where('level_id', 2)->count();       //ambil data pada tabel dengan level_id = 2, dan tampilkan jumlahnya
+        // $user = UserModel::where('level_id', 2)->count();       //ambil data pada tabel dengan level_id = 2, dan tampilkan jumlahnya
         // dd($user);
+        // return view('user', ['data' => $user]);
+
+        //PRAKTIKUM 2.4(1)
+        $user = UserModel::firstOrCreate(       //tampilkan jika ada, jika tidak maka akan dibuatkan
+            [
+                'username'  => 'manager',       //dengan username = manager
+                'nama'      => 'Manager',       //dengan nama = Manager
+            ],
+        );
+
         return view('user', ['data' => $user]);
     } 
 }
