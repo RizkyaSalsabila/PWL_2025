@@ -95,10 +95,22 @@ class UserController extends Controller
         // return view('user', ['data' => $user]);
 
         //PRAKTIKUM 2.4(1)
+        // $user = UserModel::firstOrCreate(       //tampilkan jika ada, jika tidak maka akan dibuatkan
+        //     [
+        //         'username'  => 'manager',       //dengan username = manager
+        //         'nama'      => 'Manager',       //dengan nama = Manager
+        //     ],
+        // );
+
+        // return view('user', ['data' => $user]);
+
+        //PRAKTIKUM 2.4(2)
         $user = UserModel::firstOrCreate(       //tampilkan jika ada, jika tidak maka akan dibuatkan
             [
-                'username'  => 'manager',       //dengan username = manager
-                'nama'      => 'Manager',       //dengan nama = Manager
+                'username' => 'manager22',          //dengan username = manager22
+                'nama' => 'Manager Dua Dua',        //dengan nama = Manager Dua Dua
+                'password' => Hash::make('12345'),  //dengan password 
+                'level_id' => 2                     //dengan level_id = 2
             ],
         );
 
