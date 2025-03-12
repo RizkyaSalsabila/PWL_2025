@@ -153,28 +153,46 @@ class UserController extends Controller
 
 
         //PRAKTIKUM 2.5(1)
-        $user = UserModel::create([
-            'username'  => 'manager55',
-            'nama'      => 'Manager55',
-            'password'  => Hash::make('12345'),
-            'level_id'  => 2,
+        // $user = UserModel::create([
+        //     'username'  => 'manager55',
+        //     'nama'      => 'Manager55',
+        //     'password'  => Hash::make('12345'),
+        //     'level_id'  => 2,
+        // ]);
+        // $user->username = 'manager56';
+
+        // $user->isDirty();   //true
+        // $user->isDirty('username');     //true
+        // $user->isDirty('nama');     //false
+        // $user->isDirty(['nama', 'username']);     //true
+
+        // $user->isClean();   //false
+        // $user->isClean('username');     //false
+        // $user->isClean('nama');     //true
+        // $user->isClean(['nama', 'username']);     //false
+
+        // $user->save();
+
+        // $user->isDirty();   //false
+        // $user->isClean();   //true
+        // dd($user->isDirty());
+
+
+        //PRAKTIKUM 2.5(2)
+        $user = UserModel::create([         //membuat data baru 
+            'username'  => 'manager_11',     //dengan username 'manager_11'
+            'nama'      => 'Manager 11',     //dengan nama 'Manager 11'
+            'password'  => Hash::make('12345'),     //dengan password
+            'level_id'  => 2,               //dengan level_id '2' 
         ]);
-        $user->username = 'manager56';
+        $user->username = 'manager_12';      //mengubah username menjadi 'manager_12'
 
-        $user->isDirty();   //true
-        $user->isDirty('username');     //true
-        $user->isDirty('nama');     //false
-        $user->isDirty(['nama', 'username']);     //true
+        $user->save();          //disimpan dalam database
 
-        $user->isClean();   //false
-        $user->isClean('username');     //false
-        $user->isClean('nama');     //true
-        $user->isClean(['nama', 'username']);     //false
-
-        $user->save();
-
-        $user->isDirty();   //false
-        $user->isClean();   //true
-        dd($user->isDirty());
+        $user->wasChanged();   //true
+        $user->wasChanged('username');     //true
+        $user->wasChanged(['username', 'level_id']);    //true
+        $user->wasChanged('nama');     //false
+        dd($user->wasChanged(['nama', 'username']));     //true
     } 
 }
