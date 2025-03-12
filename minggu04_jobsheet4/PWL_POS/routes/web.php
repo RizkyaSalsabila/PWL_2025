@@ -35,3 +35,6 @@ Route::get('/user/ubah/{id}', [UserController::class, 'ubah']);
 
 //PRAKTIKUM 2.6(5) - SOAL 15
 Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
+
+//PRAKTIKUM 2.6(6) - SOAL 18
+Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);

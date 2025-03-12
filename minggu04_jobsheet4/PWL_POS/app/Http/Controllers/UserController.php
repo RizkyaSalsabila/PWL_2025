@@ -239,4 +239,12 @@ class UserController extends Controller
 
         return redirect('/user');       //mengembalikan hasilnya ke tampilan view 'user'
     }
+
+    //PRAKTIKUM 2.6(6) - SOAL 19
+    public function hapus($id) {        //hapus data sesuai ID yang dipilih
+        $user = UserModel::find($id);   //mencari data yang sesuai dengan ID tersebut
+        $user->delete();        //untuk menghapus dari database
+
+        return redirect('/user');       //mengembalikan hasilnya ke tampilan view 'user'
+    }
 }
