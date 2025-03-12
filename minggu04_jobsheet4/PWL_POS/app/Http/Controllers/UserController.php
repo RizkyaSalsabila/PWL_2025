@@ -224,4 +224,19 @@ class UserController extends Controller
         $user = UserModel::find($id);   //mencari data yang sesuai dengan ID tersebut
         return view('user_ubah', ['data' => $user]);        //mengirimkan data ke tampilan 'user_ubah.blade.php'
     }
+
+    //PRAKTIKUM 2.6(5) - SOAL 16
+    public function ubah_simpan($id, Request $request) {        //untuk menerima data dari form inputan 
+                                                                //dan ambil data sesuai ID yang dipilih
+        $user = UserModel::find($id);           //mencari data yang sesuai dengan ID tersebut
+
+        $user->username = $request->username;
+        $user->nama     = $request->nama;
+        $user->password = Hash::make('$request->password');
+        $user->level_id = $request->level_id;
+        
+        $user->save();      //untuk menyimpan perubahan ke database
+
+        return redirect('/user');       //mengembalikan hasilnya ke tampilan view 'user'
+    }
 }
