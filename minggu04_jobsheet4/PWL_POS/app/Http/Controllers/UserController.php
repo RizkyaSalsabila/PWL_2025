@@ -206,4 +206,16 @@ class UserController extends Controller
     public function tambah() {
         return view('user_tambah');
     }
+
+    //PRAKTIKUM 2.6(3) - SOAL 9
+    public function tambah_simpan(Request $request) {       //untuk menerima data dari form inputan
+        UserModel::create([             //menyimpan data ke database
+            'username' => $request->username,
+            'nama' => $request->nama,
+            'password' => Hash::make('$request->password'),
+            'level_id' => $request->level_id
+        ]);
+
+        return redirect('/user');       //mengembalikan hasilnya ke tampilan view 'user'
+    }
 }
