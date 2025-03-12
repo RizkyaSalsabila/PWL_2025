@@ -218,4 +218,10 @@ class UserController extends Controller
 
         return redirect('/user');       //mengembalikan hasilnya ke tampilan view 'user'
     }
+
+    //PRAKTIKUM 2.6(4) - SOAL 13
+    public function ubah($id) {         //ambil data sesuai ID yang dipilih
+        $user = UserModel::find($id);   //mencari data yang sesuai dengan ID tersebut
+        return view('user_ubah', ['data' => $user]);        //mengirimkan data ke tampilan 'user_ubah.blade.php'
+    }
 }

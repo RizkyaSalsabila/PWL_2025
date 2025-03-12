@@ -29,3 +29,6 @@ Route::get('/user/tambah', [UserController::class, 'tambah']);
 
 //PRAKTIKUM 2.6(3) - SOAL 8
 Route::post('/user/tambah_simpan', [UserController::class, 'tambah_simpan']);
+
+//PRAKTIKUM 2.6(4) - SOAL 12
+Route::get('/user/ubah/{id}', [UserController::class, 'ubah']);
