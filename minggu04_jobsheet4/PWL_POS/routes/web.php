@@ -23,3 +23,6 @@ Route::get('/', function () {
 Route::get('/level', [LevelController::class, 'index']);
 Route::get('/kategori', [KategoriController::class, 'index']);
 Route::get('/user', [UserController::class, 'index']);
+
+//PRAKTIKUM 2.6(2) - SOAL 5
+Route::get('/user/tambah', [UserController::class, 'tambah']);

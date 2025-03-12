@@ -199,5 +199,11 @@ class UserController extends Controller
         //PRAKTIKUM 2.6(1)
         $user = UserModel::all();           //ambil semua data dari tabel 'm_user'
         return view('user', ['data' => $user]);     //mengirimkan data ke tampilan 'user.blade.php'
+
     } 
+
+    //PRAKTIKUM 2.6(2) - SOAL 6
+    public function tambah() {
+        return view('user_tambah');
+    }
 }
