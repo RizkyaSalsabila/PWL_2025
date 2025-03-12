@@ -179,20 +179,25 @@ class UserController extends Controller
 
 
         //PRAKTIKUM 2.5(2)
-        $user = UserModel::create([         //membuat data baru 
-            'username'  => 'manager_11',     //dengan username 'manager_11'
-            'nama'      => 'Manager 11',     //dengan nama 'Manager 11'
-            'password'  => Hash::make('12345'),     //dengan password
-            'level_id'  => 2,               //dengan level_id '2' 
-        ]);
-        $user->username = 'manager_12';      //mengubah username menjadi 'manager_12'
+        // $user = UserModel::create([         //membuat data baru 
+        //     'username'  => 'manager_11',     //dengan username 'manager_11'
+        //     'nama'      => 'Manager 11',     //dengan nama 'Manager 11'
+        //     'password'  => Hash::make('12345'),     //dengan password
+        //     'level_id'  => 2,               //dengan level_id '2' 
+        // ]);
+        // $user->username = 'manager_12';      //mengubah username menjadi 'manager_12'
 
-        $user->save();          //disimpan dalam database
+        // $user->save();          //disimpan dalam database
 
-        $user->wasChanged();   //true
-        $user->wasChanged('username');     //true
-        $user->wasChanged(['username', 'level_id']);    //true
-        $user->wasChanged('nama');     //false
-        dd($user->wasChanged(['nama', 'username']));     //true
+        // $user->wasChanged();   //true
+        // $user->wasChanged('username');     //true
+        // $user->wasChanged(['username', 'level_id']);    //true
+        // $user->wasChanged('nama');     //false
+        // dd($user->wasChanged(['nama', 'username']));     //true
+
+
+        //PRAKTIKUM 2.6(1)
+        $user = UserModel::all();           //ambil semua data dari tabel 'm_user'
+        return view('user', ['data' => $user]);     //mengirimkan data ke tampilan 'user.blade.php'
     } 
 }
