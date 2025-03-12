@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserModel extends Model
 {
@@ -30,4 +31,13 @@ class UserModel extends Model
         'nama',
         'password'      //^^sebagai solusi
     ];
+
+    //PRAKTIKUM 2.7(1) - SOAL 1
+    public function level(): BelongsTo {        //model ini memiliki relasi "dimiliki oleh" (belongsTo) dengan LevelModel
+        return $this->belongsTo(
+            LevelModel::class, 
+            'level_id',         //PARAMETER 1 - foreign key di tabel model saat ini
+            'level_id'          //PARAMETER 2 - primary key di tabel level_models yang menjadi referensi
+        );      
+    }
 }

@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
-    {
+    // public function index()
+    // {
         // ------------------------------------- *jobsheet 03* -------------------------------------
         //tambah data user dengan Eloquent
         // $data =[
@@ -197,10 +197,10 @@ class UserController extends Controller
 
 
         //PRAKTIKUM 2.6(1)
-        $user = UserModel::all();           //ambil semua data dari tabel 'm_user'
-        return view('user', ['data' => $user]);     //mengirimkan data ke tampilan 'user.blade.php'
+    //     $user = UserModel::all();           //ambil semua data dari tabel 'm_user'
+    //     return view('user', ['data' => $user]);     //mengirimkan data ke tampilan 'user.blade.php'
 
-    } 
+    // } 
 
     //PRAKTIKUM 2.6(2) - SOAL 6
     public function tambah() {
@@ -246,5 +246,11 @@ class UserController extends Controller
         $user->delete();        //untuk menghapus dari database
 
         return redirect('/user');       //mengembalikan hasilnya ke tampilan view 'user'
+    }
+
+    //PRAKTIKUM 2.7(1) - SOAL 2
+    public function index() {       //fungsi untuk ambil semua data dari tabel user dengan relasinya level
+        $user = UserModel::with('level')->get();        //mengambil data dari tabel users termasuk relasinya berdasarkan level_id di users
+        dd($user);      //tampilkan hasilnya menggunakan 'die dump'
     }
 }
