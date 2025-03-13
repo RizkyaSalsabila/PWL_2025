@@ -249,8 +249,14 @@ class UserController extends Controller
     }
 
     //PRAKTIKUM 2.7(1) - SOAL 2
+    // public function index() {       //fungsi untuk ambil semua data dari tabel user dengan relasinya level
+    //     $user = UserModel::with('level')->get();        //mengambil data dari tabel users termasuk relasinya berdasarkan level_id di users
+    //     dd($user);      //tampilkan hasilnya menggunakan 'die dump'
+    // }
+
+    //PRAKTIKUM 2.7(2) - SOAL 4
     public function index() {       //fungsi untuk ambil semua data dari tabel user dengan relasinya level
         $user = UserModel::with('level')->get();        //mengambil data dari tabel users termasuk relasinya berdasarkan level_id di users
-        dd($user);      //tampilkan hasilnya menggunakan 'die dump'
+        return view('user', ['data' => $user]);         //mengirimkan data ke tampilan 'user.blade.php'
     }
 }
