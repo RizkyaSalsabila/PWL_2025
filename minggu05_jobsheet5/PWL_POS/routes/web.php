@@ -20,6 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// -- ------------------------------------- *jobsheet 04* ------------------------------------- --
 Route::get('/level', [LevelController::class, 'index']);
 Route::get('/kategori', [KategoriController::class, 'index']);
 Route::get('/user', [UserController::class, 'index']);
@@ -38,3 +39,9 @@ Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
 
 //PRAKTIKUM 2.6(6) - SOAL 18
 Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
+// -- ----------------------------------------------------------------------------------------- --
+
+
+// -- ------------------------------------- *jobsheet 05* ------------------------------------- --
+Route::get('/kategori/create', [KategoriController::class, 'create']);
+Route::post('/kategori', [KategoriController::class, 'store']);
