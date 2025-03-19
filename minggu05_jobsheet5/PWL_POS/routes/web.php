@@ -48,3 +48,7 @@ Route::post('/kategori', [KategoriController::class, 'store']);
 
 //TUGAS(1)
 Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
+
+//TUGAS(3)
+Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
+Route::put('/kategori/{id}', [KategoriController::class, 'update'])->name('kategori.update');

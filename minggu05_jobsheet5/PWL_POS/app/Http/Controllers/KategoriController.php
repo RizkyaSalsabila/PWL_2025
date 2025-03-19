@@ -52,4 +52,25 @@ class KategoriController extends Controller
 
         return redirect('/kategori');
     }
+
+    // -- TUGAS(3) --
+    public function edit($id) {
+        $dataKategori = KategoriModel::findOrFail($id);     //pakai findOrFail agar ketika data tidak ada, otomatis muncul halaman 404
+        return view('kategori.edit', ['kategori' => $dataKategori]);
+    }
+
+    public function update(Request $request, $id) {
+        $request->validate([
+            'kodeKategori' => 'required',
+            'namaKategori' => 'required'
+        ]);
+
+        $dataKategori = KategoriModel::findOrFail($id);
+        $dataKategori->update([
+            'kode_kategori' => $request->kodeKategori,
+            'nama_kategori' => $request->namaKategori
+        ]);
+
+        return redirect('/kategori')->with('success', 'Kategori berhasil diperbarui');
+    }
 }
