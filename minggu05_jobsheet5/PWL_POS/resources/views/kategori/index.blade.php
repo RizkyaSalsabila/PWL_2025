@@ -9,8 +9,15 @@
 @section('content')
     <div class="container">
         <div class="card">
-            <div class="card-header">Manage Kategori</div>
+            <div class="card-header">
+                <h2>Manage Kategori</h2>
+            </div>
+           
             <div class="card-body">
+                {{-- TUGAS(1) --}}
+                <div class="d-flex justify-content-first">
+                    <a href="{{ route('kategori.create') }}" class="btn btn-primary btn-sm my-3"><b><i class="fas fa-plus"></i>  Tambah</b></a>
+                </div>
                 {{ $dataTable->table() }}
             </div>
         </div>

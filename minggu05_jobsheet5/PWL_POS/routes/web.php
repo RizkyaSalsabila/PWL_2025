@@ -43,5 +43,8 @@ Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
 
 
 // -- ------------------------------------- *jobsheet 05* ------------------------------------- --
-Route::get('/kategori/create', [KategoriController::class, 'create']);
+// Route::get('/kategori/create', [KategoriController::class, 'create']);
 Route::post('/kategori', [KategoriController::class, 'store']);
+
+//TUGAS(1)
+Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
