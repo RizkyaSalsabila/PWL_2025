@@ -44,7 +44,7 @@ Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
 
 // -- ------------------------------------- *jobsheet 05* ------------------------------------- --
 // Route::get('/kategori/create', [KategoriController::class, 'create']);
-Route::post('/kategori', [KategoriController::class, 'store']);
+Route::post('/kategori', [KategoriController::class, 'store'])->name('kategori.store');
 
 //TUGAS(1)
 Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
@@ -52,3 +52,6 @@ Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kat
 //TUGAS(3)
 Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
 Route::put('/kategori/{id}', [KategoriController::class, 'update'])->name('kategori.update');
+
+//TUGAS(4)
+Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');

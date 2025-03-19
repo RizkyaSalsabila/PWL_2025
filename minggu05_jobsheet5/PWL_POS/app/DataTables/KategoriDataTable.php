@@ -29,12 +29,25 @@ class KategoriDataTable extends DataTable
             // -- TUGAS(3) --
             ->addColumn('action', function($row) {
                 $edit = route('kategori.edit', $row->kategori_id);
+                // -- TUGAS(4) --
+                $delete = route('kategori.destroy', $row->kategori_id);
 
                 return 
                     '
-                    <a href="' .$edit. '" class="btn btn-warning btn-sm text-white"><i class="fas fa-edit"></i>  <b>Edit</b></a>
+                    <div style="display: flex; gap: 5px;">
+                        <form action="' . $edit . '" method="GET" class="w-100">
+                            <button type="submit" class="btn btn-warning btn-sm text-white d-flex align-items-center justify-content-center gap-1 w-100" style="min-width: 80px;">
+                                <i class="fas fa-edit"></i> <b>Edit</b>
+                            </button>
+                        </form>
+                        <form action="' . $delete . '" method="POST" onsubmit="return confirm(\'Yakin ingin hapus?\');" class="w-100">
+                            ' . csrf_field() . method_field('DELETE') . '
+                            <button type="submit" class="btn btn-danger btn-sm text-white d-flex align-items-center justify-content-center gap-1 w-100" style="min-width: 80px;">
+                                <i class="fas fa-trash"></i> <b>Hapus</b>
+                            </button>
+                        </form>
+                    </div>
                     ';
-
             })
             ->rawColumns(['action'])
             ->setRowId('id');
@@ -91,7 +104,7 @@ class KategoriDataTable extends DataTable
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(100)
+                ->width(150)
                 ->addClass('text-center')
         ];
     }

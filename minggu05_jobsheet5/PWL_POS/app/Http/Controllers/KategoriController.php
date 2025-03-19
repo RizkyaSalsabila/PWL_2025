@@ -46,7 +46,7 @@ class KategoriController extends Controller
 
     public function store(Request $request) {
         KategoriModel::create([
-            'kategori_kode' => $request->kodeKategori,
+            'kode_kategori' => $request->kodeKategori,
             'nama_kategori' => $request->namaKategori,
         ]);
 
@@ -72,5 +72,13 @@ class KategoriController extends Controller
         ]);
 
         return redirect('/kategori')->with('success', 'Kategori berhasil diperbarui');
+    }
+
+    // -- TUGAS(4) --
+    public function destroy($id) {
+        $kategori = KategoriModel::findOrFail($id);
+        $kategori->delete();
+
+        return redirect('/kategori')->with('succes', 'Kategori berhasil dihapus'); 
     }
 }
