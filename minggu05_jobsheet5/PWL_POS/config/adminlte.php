@@ -327,6 +327,12 @@ return [
             'label' => 4,
             'label_color' => 'success',
         ],
+        //JS5 - TUGAS(2)
+        [
+            'text'  => 'Manage Kategori',
+            'url'   => '/kategori',
+            'icon'  => 'fas fa-fw fa-list',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
