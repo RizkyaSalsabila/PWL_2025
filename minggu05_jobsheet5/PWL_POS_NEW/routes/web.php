@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
@@ -16,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/level', [LevelController::class, 'index']);
 Route::get('/kategori', [KategoriController::class, 'index']);
@@ -38,3 +39,8 @@ Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
 
 //PRAKTIKUM 2.6(6) - SOAL 18
 Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
+
+
+// -- ------------------------------------- *jobsheet 05* ------------------------------------- --
+// -- JS5 - P2(5) --
+Route::get('/', [WelcomeController::class, 'index']);

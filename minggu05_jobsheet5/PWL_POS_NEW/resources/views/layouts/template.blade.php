@@ -57,7 +57,7 @@
         <!-- Main content -->
         <section class="content">
             {{-- JS5 - P1(18) --}}
-            @yield('layouts.content')
+            @yield('content')
         </section>
         <!-- /.content -->
     </div>
