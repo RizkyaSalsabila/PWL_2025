@@ -44,3 +44,15 @@ Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
 // -- ------------------------------------- *jobsheet 05* ------------------------------------- --
 // -- JS5 - P2(5) --
 Route::get('/', [WelcomeController::class, 'index']);
+
+// -- JS5 - P3(3) --
+Route::group(['prefix' => 'user'], function () {
+    Route::get('/', [UserController::class, 'index']);      //menampilkan halaman user
+    Route::post('/list', [UserController::class, 'list']);      //menampilkan data user dalam bentuk json untuk datatables
+    Route::get('/create', [UserController::class, 'create']);      //menampilkan halaman form tambah user
+    Route::post('/', [UserController::class, 'store']);      //menyimpan data user baru
+    Route::get('/{id}', [UserController::class, 'show']);      //P3(13) - menampilkan detail user
+    Route::get('/{id}/edit', [UserController::class, 'edit']);      //P3(17) - menampilkan halaman form edit user
+    Route::put('/{id}', [UserController::class, 'update']);      //P3(17) - menyimpan perubahan data user
+    Route::delete('/{id}', [UserController::class, 'destroy']);      //P3(21) - menghapus data user
+});
