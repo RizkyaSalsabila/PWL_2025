@@ -61,6 +61,11 @@ Route::group(['prefix' => 'user'], function () {
     Route::get('/{id}', [UserController::class, 'show']);      //P3(13) - menampilkan detail user
     Route::get('/{id}/edit', [UserController::class, 'edit']);      //P3(17) - menampilkan halaman form edit user
     Route::put('/{id}', [UserController::class, 'update']);      //P3(17) - menyimpan perubahan data user
+   
+    // -- JS6 - P2(3) --
+    Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax']);    //menampilkan halaman form edit user ajax
+    Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']);    //menyimpan perubahan data user ajax
+
     Route::delete('/{id}', [UserController::class, 'destroy']);      //P3(21) - menghapus data user
 });
 
