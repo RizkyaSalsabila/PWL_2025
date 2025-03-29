@@ -79,9 +79,23 @@ Route::group(['prefix' => 'level'], function () {
     Route::post('/list', [LevelController::class, 'list']);      //menampilkan data level dalam bentuk json untuk datatables
     Route::get('/create', [LevelController::class, 'create']);      //menampilkan halaman form tambah level
     Route::post('/', [LevelController::class, 'store']);      //menyimpan data level baru
+
+    // -- JS6 - Tugas(m_level) --
+    Route::get('/create_ajax', [LevelController::class, 'create_ajax']);     //menampilkan halaman form tambah level ajax
+    Route::post('/ajax', [LevelController::class, 'store_ajax']);            //menyimpan data level baru ajax
+
     Route::get('/{id}', [LevelController::class, 'show']);      //menampilkan detail level
     Route::get('/{id}/edit', [LevelController::class, 'edit']);      //menampilkan halaman form edit level
     Route::put('/{id}', [LevelController::class, 'update']);      //menyimpan perubahan data level
+
+    // -- JS6 - Tugas(m_level) --
+    Route::get('/{id}/edit_ajax', [LevelController::class, 'edit_ajax']);    //menampilkan halaman form edit level ajax
+    Route::put('/{id}/update_ajax', [LevelController::class, 'update_ajax']);    //menyimpan perubahan data level ajax
+
+    // -- JS6 - Tugas(m_level) --
+    Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);       //menampilkan form confirm delete level ajax
+    Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']);     //menghapus data level ajax
+
     Route::delete('/{id}', [LevelController::class, 'destroy']);      //menghapus data level
 });
 
