@@ -66,6 +66,10 @@ Route::group(['prefix' => 'user'], function () {
     Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax']);    //menampilkan halaman form edit user ajax
     Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']);    //menyimpan perubahan data user ajax
 
+    // -- JS6 - P3(2) --
+    Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);       //menampilkan form confirm delete user ajax
+    Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);     //menghapus data user ajax
+
     Route::delete('/{id}', [UserController::class, 'destroy']);      //P3(21) - menghapus data user
 });
 
