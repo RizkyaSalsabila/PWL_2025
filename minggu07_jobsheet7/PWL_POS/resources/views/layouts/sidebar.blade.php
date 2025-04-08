@@ -97,6 +97,17 @@
                 <p>Supplier Barang</p>
             </a>
         </li>
+        {{-- JS7 - Tugas1 (nomer 2) --}}
+        <li class="nav-item" style="margin-top: 130px;">
+          <a href="#" class="nav-link"
+             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>Logout</p>
+          </a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              @csrf
+          </form>
+      </li>
     </ul>
   </nav>
 </div>
