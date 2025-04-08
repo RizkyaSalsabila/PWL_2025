@@ -277,7 +277,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
     });
 
     // (m_barang)
-    Route::group(['prefix' => 'barang'], function () {
+    // Route::group(['prefix' => 'barang'], function () {
+    // -- JS7 - P3(3) --
+    Route::prefix('barang')->middleware(['authorize:ADM,MNG'])->group(function() {
         Route::get('/', [BarangController::class, 'index']);                            //menampilkan halaman barang
         Route::post('/list', [BarangController::class, 'list']);                        //menampilkan data barang dalam bentuk json untuk datatables
         Route::get('/create', [BarangController::class, 'create']);                     //menampilkan halaman form tambah barang
