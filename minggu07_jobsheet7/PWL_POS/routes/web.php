@@ -203,7 +203,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
     Route::get('/', [WelcomeController::class, 'index']);
 
     // (m_user)
-    Route::group(['prefix' => 'user'], function () {
+    // Route::group(['prefix' => 'user'], function () {
+    // -- JS7 - Tugas3(nomer 3) --
+    Route::prefix('user')->middleware(['authorize:ADM'])->group(function () {
         Route::get('/', [UserController::class, 'index']);                             //menampilkan halaman user
         Route::post('/list', [UserController::class, 'list']);                         //menampilkan data user dalam bentuk json untuk datatables
         Route::get('/create', [UserController::class, 'create']);                      //menampilkan halaman form tambah user
@@ -241,7 +243,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
     });
 
     // (m_kategori)
-    Route::group(['prefix' => 'kategori'], function () {
+    // Route::group(['prefix' => 'kategori'], function () {
+    // -- JS7 - Tugas3(nomer 3) --
+    Route::prefix('kategori')->middleware(['authorize:ADM,MNG'])->group(function () {
         Route::get('/', [KategoriController::class, 'index']);                          //menampilkan halaman kategori
         Route::post('/list', [KategoriController::class, 'list']);                      //menampilkan data kategori dalam bentuk json untuk datatables
         Route::get('/create', [KategoriController::class, 'create']);                   //menampilkan halaman form tambah kategori
@@ -259,7 +263,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
     });
 
     // (m_supplier)
-    Route::group(['prefix' => 'supplier'], function () {
+    // Route::group(['prefix' => 'supplier'], function () {
+    // -- JS7 - Tugas3(nomer 3) --
+    Route::prefix('supplier')->middleware(['authorize:ADM,MNG'])->group(function () {
         Route::get('/', [SupplierController::class, 'index']);                          //menampilkan halaman supplier
         Route::post('/list', [SupplierController::class, 'list']);                      //menampilkan data supplier dalam bentuk json untuk datatables
         Route::get('/create', [SupplierController::class, 'create']);                   //menampilkan halaman form tambah supplier
@@ -279,7 +285,7 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
     // (m_barang)
     // Route::group(['prefix' => 'barang'], function () {
     // -- JS7 - P3(3) --
-    Route::prefix('barang')->middleware(['authorize:ADM,MNG'])->group(function() {
+    Route::prefix('barang')->middleware(['authorize:ADM,MNG,STF'])->group(function() {
         Route::get('/', [BarangController::class, 'index']);                            //menampilkan halaman barang
         Route::post('/list', [BarangController::class, 'list']);                        //menampilkan data barang dalam bentuk json untuk datatables
         Route::get('/create', [BarangController::class, 'create']);                     //menampilkan halaman form tambah barang
