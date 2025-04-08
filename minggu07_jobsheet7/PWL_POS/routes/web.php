@@ -196,7 +196,7 @@ Route::pattern('id', '[0-9]+');     //artinya ketika ada parameter {id}, maka ha
 
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::middleware(['auth'])->group(function() {     //artinya, semua route di dalam group ini harus login dulu
     //masukkan semua route yang perlu autentikasi di sini
@@ -221,7 +221,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
     });
 
     // (m_level)
-    Route::group(['prefix' => 'level'], function () {
+    //  Route::group(['prefix' => 'level'], function () {
+    // -- JS7 - P2(6) --
+    Route::prefix('level')->middleware(['authorize:ADM'])->group(function () {
         Route::get('/', [LevelController::class, 'index']);                            //menampilkan halaman level
         Route::post('/list', [LevelController::class, 'list']);                        //menampilkan data level dalam bentuk json untuk datatables
         Route::get('/create', [LevelController::class, 'create']);                     //menampilkan halaman form tambah level

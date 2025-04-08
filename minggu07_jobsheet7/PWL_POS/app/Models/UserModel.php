@@ -57,4 +57,16 @@ class UserModel extends Authenticatable
             'level_id'          //PARAMETER 2 - primary key di tabel level_models yang menjadi referensi
         );      
     }
+
+    // -- JS7 - P2(1) --
+    //untuk mendapatkan nama role
+    public function getRoleName(): string {
+        return $this->level->level_nama;
+    }
+
+    // -- JS7 - P2(1) --
+    //untuk mengecek apakah user memiliki role tertentu
+    public function hasRole($role): bool {
+        return $this->level->level_kode == $role;
+    }
 }
