@@ -8,6 +8,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangController;
 use Illuminate\Support\Facades\Route;
+use OpenSpout\Common\Entity\Row;
 
 /*
 |--------------------------------------------------------------------------
@@ -197,6 +198,10 @@ Route::pattern('id', '[0-9]+');     //artinya ketika ada parameter {id}, maka ha
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+
+// -- JS7 - Tugas4(nomer 1) --
+Route::get('register', [AuthController::class, 'register'])->name('register');
+Route::post('register', [AuthController::class, 'postRegister']);
 
 Route::middleware(['auth'])->group(function() {     //artinya, semua route di dalam group ini harus login dulu
     //masukkan semua route yang perlu autentikasi di sini
