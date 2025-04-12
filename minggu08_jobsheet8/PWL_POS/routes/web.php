@@ -305,5 +305,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::delete('/{id}', [BarangController::class, 'destroy']);                   //menghapus data barang
         Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);     //menampilkan form confirm delete barang ajax
         Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);   //menghapus data barang ajax
+        
+        // -- JS8 - P1(5) --
+        Route::get('/import', [BarangController::class, 'import']);                     //ajax form upload excel
+        Route::post('/import_ajax', [BarangController::class, 'import_ajax']);          //ajax import excel
     });
 });
