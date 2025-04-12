@@ -245,6 +245,10 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);     //menampilkan form confirm delete level ajax
         Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']);   //menghapus data level ajax
         Route::delete('/{id}', [LevelController::class, 'destroy']);                   //menghapus data level
+
+        // -- JS8 - Tugas(m_level) --
+        Route::get('/import', [LevelController::class, 'import']);                     //ajax form upload excel
+        Route::post('/import_ajax', [LevelController::class, 'import_ajax']);          //ajax import excel
     });
 
     // (m_kategori)
