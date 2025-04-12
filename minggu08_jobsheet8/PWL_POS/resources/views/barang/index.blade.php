@@ -51,7 +51,7 @@
                     <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th>Harga Beli</th>
-                    <th>Nama Jual</th>
+                    <th>Harga Jual</th>
                     <th>Kategori Barang</th>
                     <th>Aksi</th>
                 </tr>
