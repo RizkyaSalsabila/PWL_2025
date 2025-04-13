@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Controller
 {
@@ -666,7 +667,7 @@ class UserController extends Controller
     // -- JS8 - Tugas2(m_user) --
     public function export_excel() {
         //ambil data user beserta level yang akan di export
-        $user = UserModel::select('level_id', 'username', 'nama', 'password')
+        $user = UserModel::select('level_id', 'username', 'nama')
                     ->orderBy('level_id')        // urutkan berdasarkan level
                     ->with('level')              // ambil relasi level
                     ->get();
@@ -721,4 +722,29 @@ class UserController extends Controller
         $writer->save('php://output');      // simpan file langsung ke output browser
         exit;       // hentikan eksekusi agar tidak lanjut render halaman lain
     } // end function export_excel
+
+    // -- JS8 - Tugas3(m_user)  --
+    public function export_pdf() {
+        // ambil data user dari database beserta relasi level
+        $user = UserModel::select('level_id','username','nama')
+                    ->orderBy('level_id')     // urutkan berdasarkan level_id
+                    ->orderBy('nama')     // lalu urutkan berdasarkan nama
+                    ->with('level')          // ambil relasi level 
+                    ->get();
+
+        // buat PDF dari view 'user.export_pdf' dan kirim data $user ke view tersebut
+        $pdf = Pdf::loadView('user.export_pdf', ['user' => $user]);
+        
+        // set ukuran kertas menjadi A4 dan orientasi portrait (tegak)
+        $pdf->setPaper('a4', 'portrait'); 
+
+        // aktifkan opsi agar bisa render gambar dari URL (jika ada gambar dari internet)
+        $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
+        
+        // render PDF
+        $pdf->render();
+
+        // tampilkan PDF di browser (stream), nama file dinamis berdasarkan tanggal & jam
+        return $pdf->stream('Data User '.date('Y-m-d H:i:s').'.pdf');
+    }
 }

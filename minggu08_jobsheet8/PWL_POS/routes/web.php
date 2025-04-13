@@ -231,7 +231,10 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::post('/import_ajax', [UserController::class, 'import_ajax']);          //ajax import excel
     
         // -- JS8 - Tugas2(m_user) --
-        Route::get('/export_excel', [UserController::class, 'export_excel']);         //export_excel        
+        Route::get('/export_excel', [UserController::class, 'export_excel']);         //export_excel 
+        
+        // -- JS8 - Tugas3(m_user) --
+        Route::get('/export_pdf', [UserController::class, 'export_pdf']);         //export_pdf 
     });
 
     // (m_level)

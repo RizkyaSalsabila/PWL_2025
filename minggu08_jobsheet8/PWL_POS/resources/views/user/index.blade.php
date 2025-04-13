@@ -12,8 +12,11 @@
 
             {{-- <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create') }}">Tambah</a> --}}
             {{-- JS8 - Tugas2(m_user) --}}
-            <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/export_excel') }}"><i class="fa fa-file-excel"></i> Export User</a>
+            <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/export_excel') }}"><i class="fa fa-file-excel"></i> Export User (Excel)</a>
             
+            {{-- JS8 - Tugas3(m_user) --}}
+            <a class="btn btn-sm btn-secondary mt-1" href="{{ url('user/export_pdf') }}"><i class="fa fa-file-pdf"></i> Export User (PDF)</a>
+           
             {{-- JS6 - P1(3) --}}
             <button onclick="modalAction('{{ url('/user/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
         </div>
