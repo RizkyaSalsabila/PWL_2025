@@ -12,8 +12,11 @@
 
             {{-- <a class="btn btn-sm btn-primary mt-1" href="{{ url('level/create') }}">Tambah</a> --}}
             {{-- JS8 - Tugas2(m_level) --}}
-            <a class="btn btn-sm btn-primary mt-1" href="{{ url('level/export_excel') }}"><i class="fa fa-file-excel"></i> Export Level</a>
+            <a class="btn btn-sm btn-primary mt-1" href="{{ url('level/export_excel') }}"><i class="fa fa-file-excel"></i> Export Level (Excel)</a>
             
+            {{-- JS8 - Tugas3(m_level) --}}
+            <a class="btn btn-sm btn-secondary mt-1" href="{{ url('level/export_pdf') }}"><i class="fa fa-file-pdf"></i> Export Level (PDF)</a>
+           
             {{-- JS6 - Tugas(m_level) --}}
             <button onclick="modalAction('{{ url('/level/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
         </div>
