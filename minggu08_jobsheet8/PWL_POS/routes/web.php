@@ -283,6 +283,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         // -- JS8 - Tugas(m_kategori) --
         Route::get('/import', [KategoriController::class, 'import']);                     //ajax form upload excel
         Route::post('/import_ajax', [KategoriController::class, 'import_ajax']);          //ajax import excel
+        
+        // -- JS8 - Tugas2(m_kategori) --
+        Route::get('/export_excel', [KategoriController::class, 'export_excel']);         //export_excel        
     });
 
     // (m_supplier)
