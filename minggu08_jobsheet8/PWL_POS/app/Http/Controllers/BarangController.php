@@ -398,4 +398,67 @@ class BarangController extends Controller
 
         return redirect('/');
     }   
+
+    // -- JS8 - P3(4) --
+    public function export_excel() {
+        //ambil data barang beserta kategori yang akan di export
+        $barang = BarangModel::select('kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual')
+                    ->orderBy('kategori_id')        // urutkan berdasarkan kategori
+                    ->with('kategori')              // ambil relasi kategori
+                    ->get();
+
+        // load library excel atau PhpSpreadsheet
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();   // ambil sheet yang aktif untuk digunakan
+
+        // set header kolom di baris pertama
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Kode Barang');
+        $sheet->setCellValue('C1', 'Nama Barang');
+        $sheet->setCellValue('D1', 'Harga Beli');
+        $sheet->setCellValue('E1', 'Harga Jual');
+        $sheet->setCellValue('F1', 'Kategori');
+
+        // buat teks di header menjadi bold
+        $sheet->getStyle('A1:F1')->getFont()->setBold(true);   // bold header
+
+        $no = 1;         // nomor data dimulai dari 1
+        $baris = 2;      // baris data dimulai dari baris ke 2
+        // loop untuk menuliskan data ke dalam sheet
+        foreach ($barang as $key => $value) {
+            $sheet->setCellValue('A' . $baris, $no);    // No
+            $sheet->setCellValue('B' . $baris, $value->barang_kode);    // Kode Barang
+            $sheet->setCellValue('C' . $baris, $value->barang_nama);    // Nama Barang
+            $sheet->setCellValue('D' . $baris, $value->harga_beli);     // Harga Beli
+            $sheet->setCellValue('E' . $baris, $value->harga_jual);     // Harga Jual
+            $sheet->setCellValue('F' . $baris, $value->kategori->nama_kategori); // ambil nama kategori dari relasi
+            $baris++;   // pindah ke baris berikutnya
+            $no++;      // tambah nomor urut
+        }
+
+        // atur ukuran kolom agar menyesuaikan isi secara otomatis
+        foreach (range('A', 'F') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true); // set auto size untuk kolom
+        }
+
+        // set nama sheet
+        $sheet->setTitle('Data Barang'); // set title sheet
+
+        // buat writer untuk menyimpan spreadsheet ke format Excel (.xlsx)
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data Barang ' . date('Y-m-d H:i:s') . '.xlsx';
+
+        // set header HTTP agar browser tahu ini file Excel dan langsung mendownload
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0'); 
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+
+        $writer->save('php://output');      // simpan file langsung ke output browser
+        exit;       // hentikan eksekusi agar tidak lanjut render halaman lain
+    } // end function export_excel
 }
