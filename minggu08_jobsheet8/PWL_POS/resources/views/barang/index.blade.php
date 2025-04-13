@@ -12,7 +12,10 @@
 
             {{-- <a class="btn btn-sm btn-primary mt-1" href="{{ url('barang/create') }}">Tambah</a> --}}
             {{-- JS8 - P2(1) --}}
-            <a class="btn btn-sm btn-primary mt-1" href="{{ url('barang/export_excel') }}"><i class="fa fa-file-excel"></i> Export Barang</a>
+            <a class="btn btn-sm btn-primary mt-1" href="{{ url('barang/export_excel') }}"><i class="fa fa-file-excel"></i> Export Barang (Excel)</a>
+
+            {{-- JS8 - P3(2) --}}
+            <a class="btn btn-sm btn-secondary mt-1" href="{{ url('barang/export_pdf') }}"><i class="fa fa-file-pdf"></i> Export Barang (PDF)</a>
             
             {{-- JS6 - Tugas(m_barang) --}}
             <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>

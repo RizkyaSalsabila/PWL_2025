@@ -340,5 +340,8 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         
         // -- JS8 - P2(2) --
         Route::get('/export_excel', [BarangController::class, 'export_excel']);         //export_excel
+        
+        // -- JS8 - P3(3) --
+        Route::get('/export_pdf', [BarangController::class, 'export_pdf']);         //export_pdf
     });
 });
