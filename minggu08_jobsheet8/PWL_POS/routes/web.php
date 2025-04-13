@@ -273,6 +273,10 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::delete('/{id}', [KategoriController::class, 'destroy']);                 //menghapus data kategori
         Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);   //menampilkan form confirm delete kategori ajax
         Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']); //menghapus data kategori ajax
+    
+        // -- JS8 - Tugas(m_kategori) --
+        Route::get('/import', [KategoriController::class, 'import']);                     //ajax form upload excel
+        Route::post('/import_ajax', [KategoriController::class, 'import_ajax']);          //ajax import excel
     });
 
     // (m_supplier)

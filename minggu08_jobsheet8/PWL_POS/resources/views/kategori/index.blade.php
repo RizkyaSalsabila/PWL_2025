@@ -7,6 +7,9 @@
     <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
+            {{-- JS8 - Tugas(m_kategori) --}}
+            <button onclick="modalAction('{{ url('/kategori/import') }}')" class="btn btn-sm btn-info mt-1">Import Kategori</button>
+
             <a class="btn btn-sm btn-primary mt-1" href="{{ url('kategori/create') }}">Tambah</a>
             {{-- JS6 - Tugas(m_kategori) --}}
             <button onclick="modalAction('{{ url('/kategori/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
@@ -50,11 +53,12 @@
             }); 
         } 
 
-        var dataKategori;
+        var tableKategori;
         $(document).ready(function() {
-            dataKategori = $('#table_kategori').DataTable({
+            tableKategori = $('#table_kategori').DataTable({
                 // serverSide: true, jika ingin menggunakan server side processing
                 serverSide: true,
+                processing: true,
                 ajax: {
                     "url": "{{ url('kategori/list') }}",
                     "dataType": "json",
@@ -65,34 +69,46 @@
                         //nomor urut dari laravel datatable addIndexColumn()
                         data: "DT_RowIndex",
                         className: "text-center",
+                        width: "5%",
                         orderable: false,
                         searchable: false
                     },
                     {
                         data: "kode_kategori",
                         className: "",
+                        width: "10%",
                         orderable: true,    //jika ingin kolom ini bisa diurutkan
                         searchable: true    //jika ingin kolom ini bisa dicari
                     },
                     {
                         data: "nama_kategori",
                         className: "",
+                        width: "25%",
                         orderable: true,
                         searchable: true
                     },
                     {
                         data: "deskripsi",
                         className: "",
+                        width: "40%",
                         orderable: false,
                         searchable: true
                     },
                     {
                         data: "aksi",
                         className: "",
+                        width: "14%",
                         orderable: false,
                         searchable: false
                     }
                 ],
+            });
+
+            // JS8 - Tugas(m_kategori) 
+            $('#table-kategori_filter input').unbid().bind().on('keyup', function(e) {
+                if (e.keyCode == 13) { //enter key
+                    tableKategori.search(this.value).draw();
+                }
             });
         });
     </script>
