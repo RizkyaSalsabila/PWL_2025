@@ -310,6 +310,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         // -- JS8 - Tugas(m_supplier) --
         Route::get('/import', [SupplierController::class, 'import']);                     //ajax form upload excel
         Route::post('/import_ajax', [SupplierController::class, 'import_ajax']);          //ajax import excel
+
+        // -- JS8 - Tugas2(m_supplier) --
+        Route::get('/export_excel', [SupplierController::class, 'export_excel']);         //export_excel        
     });
 
     // (m_barang)
