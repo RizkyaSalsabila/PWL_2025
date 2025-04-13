@@ -253,6 +253,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         // -- JS8 - Tugas(m_level) --
         Route::get('/import', [LevelController::class, 'import']);                     //ajax form upload excel
         Route::post('/import_ajax', [LevelController::class, 'import_ajax']);          //ajax import excel
+
+        // -- JS8 - Tugas2(m_level) --
+        Route::get('/export_excel', [LevelController::class, 'export_excel']);         //export_excel        
     });
 
     // (m_kategori)
@@ -326,7 +329,7 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::get('/import', [BarangController::class, 'import']);                     //ajax form upload excel
         Route::post('/import_ajax', [BarangController::class, 'import_ajax']);          //ajax import excel
         
-        // -- JS8 - P1(5) --
+        // -- JS8 - P2(2) --
         Route::get('/export_excel', [BarangController::class, 'export_excel']);         //export_excel
     });
 });

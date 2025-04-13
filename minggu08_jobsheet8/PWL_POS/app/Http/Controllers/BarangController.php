@@ -399,7 +399,8 @@ class BarangController extends Controller
         return redirect('/');
     }   
 
-    // -- JS8 - P3(4) --
+    // -- JS8 - P2(3 - 8) --
+    // -- JS8 - P2(4) --
     public function export_excel() {
         //ambil data barang beserta kategori yang akan di export
         $barang = BarangModel::select('kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual')
@@ -407,6 +408,7 @@ class BarangController extends Controller
                     ->with('kategori')              // ambil relasi kategori
                     ->get();
 
+        // -- JS8 - P2(5) --
         // load library excel atau PhpSpreadsheet
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();   // ambil sheet yang aktif untuk digunakan
@@ -422,6 +424,7 @@ class BarangController extends Controller
         // buat teks di header menjadi bold
         $sheet->getStyle('A1:F1')->getFont()->setBold(true);   // bold header
 
+        // -- JS8 - P2(6) --
         $no = 1;         // nomor data dimulai dari 1
         $baris = 2;      // baris data dimulai dari baris ke 2
         // loop untuk menuliskan data ke dalam sheet
@@ -436,11 +439,13 @@ class BarangController extends Controller
             $no++;      // tambah nomor urut
         }
 
+        // -- JS8 - P2(7) --
         // atur ukuran kolom agar menyesuaikan isi secara otomatis
         foreach (range('A', 'F') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true); // set auto size untuk kolom
         }
 
+        // -- JS8 - P2(8) --
         // set nama sheet
         $sheet->setTitle('Data Barang'); // set title sheet
 
