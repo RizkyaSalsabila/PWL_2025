@@ -225,6 +225,10 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);      //menampilkan form confirm delete user ajax
         Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);    //menghapus data user ajax
         Route::delete('/{id}', [UserController::class, 'destroy']);                    //menghapus data user
+
+        // -- JS8 - Tugas(m_user) --
+        Route::get('/import', [UserController::class, 'import']);                     //ajax form upload excel
+        Route::post('/import_ajax', [UserController::class, 'import_ajax']);          //ajax import excel
     });
 
     // (m_level)

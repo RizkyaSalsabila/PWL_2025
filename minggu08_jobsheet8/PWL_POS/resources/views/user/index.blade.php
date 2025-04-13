@@ -7,6 +7,9 @@
     <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
+            {{-- JS8 - Tugas(m_user) --}}
+            <button onclick="modalAction('{{ url('/user/import') }}')" class="btn btn-sm btn-info mt-1">Import User</button>
+
             <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create') }}">Tambah</a>
             {{-- JS6 - P1(3) --}}
             <button onclick="modalAction('{{ url('/user/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
@@ -15,30 +18,32 @@
 
     {{-- JS5 - P3(23) --}}
     <div class="card-body">
+        <!-- untuk filter data -->
+        <div id="filter" class="form-horizontal filter-date p-2 border-bottom mb-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group form-group-sm row text-sm mb-0">
+                        <label for="filter_date" class="col-md-1 col-formlabel">Filter</label>
+                        <div class="col-md-3">
+                            <select  name="filter_level" class="form-control formcontrol-sm filter_level">
+                                <option value="">- Semua -</option>
+                                @foreach($level as $l)
+                                    <option value="{{ $l->filter_level_id }}">{{ $l->username }}</option>
+                                @endforeach
+                            </select>
+                            <small class="form-text text-muted">User</small>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </div> 
+
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-
-        {{-- JS5 - P4(2) --}}
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">Filter:</label>
-                    <div class="col-3">
-                        <select class="form-control" id="level_id" name="level_id" required>
-                            <option value="">- Semua -</option>
-                            @foreach($level as $item)
-                                <option value="{{ $item->level_id }}">{{ $item->level_nama }}</option>
-                            @endforeach
-                        </select>
-                        <small class="form-text text-muted">Level Pengguna</small>
-                    </div>
-                </div>
-            </div>
-        </div>        
+        @endif        
 
         <table class="table table-bordered table-striped table-hover table-sm" id="table_user">
             <thead>
@@ -69,11 +74,12 @@
             }); 
         } 
 
-        var dataUser;
+        var tableUser;
         $(document).ready(function() {
-            dataUser = $('#table_user').DataTable({
+            tableUser = $('#table_user').DataTable({
                 // serverSide: true, jika ingin menggunakan server side processing
                 serverSide: true,
+                processing: true,
                 ajax: {
                     "url": "{{ url('user/list') }}",
                     "dataType": "json",
@@ -88,18 +94,21 @@
                         //nomor urut dari laravel datatable addIndexColumn()
                         data: "DT_RowIndex",
                         className: "text-center",
+                        width: "5%",
                         orderable: false,
                         searchable: false
                     },
                     {
                         data: "username",
                         className: "",
+                        width: "20%",
                         orderable: true,    //jika ingin kolom ini bisa diurutkan
                         searchable: true    //jika ingin kolom ini bisa dicari
                     },
                     {
                         data: "nama",
                         className: "",
+                        width: "37%",
                         orderable: true,
                         searchable: true
                     },
@@ -107,21 +116,29 @@
                         //mengambil data level hasil dari ORM berelasi
                         data: "level.level_nama",
                         className: "",
+                        width: "15%",
                         orderable: false,
                         searchable: false
                     },
                     {
                         data: "aksi",
                         className: "",
+                        width: "15%",
                         orderable: false,
                         searchable: false
                     }
                 ],
             });
 
+            // -- JS8 - Tugas(m_user) --
+            $('#table-user_filter input').unbid().bind().on('keyup', function(e) {
+                if (e.keyCode == 13) { //enter key
+                    tableUser.search(this.value).draw();
+                }
+            });
             // -- JS5 - P4(4) --
             $('#level_id').on('change', function() {
-                dataUser.ajax.reload();
+                tableUser.ajax.reload();
             });
         });
     </script>

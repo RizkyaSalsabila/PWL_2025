@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class UserController extends Controller
 {
@@ -301,9 +302,15 @@ class UserController extends Controller
                         ->with('level');
 
         // JS5 - P4(5)
-        //filter data user berdasarkan level_id
-        if ($request->level_id) {
-            $users->where('level_id', $request->level_id);
+        // //filter data user berdasarkan level_id
+        // if ($request->level_id) {
+        //     $users->where('level_id', $request->level_id);
+        // }
+
+        // -- JS8 - Tugas(m_user)--
+        $level_id = $request->input('filter_level'); 
+        if(!empty($level_id)) {             
+            $users->where('level_id', $level_id);       
         }
 
         return DataTables::of($users)
@@ -464,10 +471,16 @@ class UserController extends Controller
         // cek apakah request berupa ajax
         if($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'level_id' => 'required|integer',
-                'username' => 'required|string|min:3|unique:m_user,username',
-                'nama'     => 'required|string|max:100',
-                'password' => 'required|min:6'
+                // 'level_id' => 'required|integer',
+                // 'username' => 'required|string|min:3|unique:m_user,username',
+                // 'nama'     => 'required|string|max:100',
+                // 'password' => 'required|min:6'
+
+                // -- JS8 - Tugas(m_user) --
+                'level_id' => ['required', 'integer'],
+                'username' => ['required', 'string', 'min:3', 'unique:m_user,username'],
+                'nama'     => ['required', 'string', 'max:100'],
+                'password' => ['required', 'min:6'],
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -511,10 +524,16 @@ class UserController extends Controller
          // cek apakah request dari ajax
          if ($request->ajax() || $request->wantsJson()) {
              $rules = [
-                 'level_id' => 'required|integer',
-                 'username' => 'required|max:20|unique:m_user,username,' . $id . ',user_id',
-                 'nama'     => 'required|max:100',
-                 'password' => 'nullable|min:6|max:20'
+                //  'level_id' => 'required|integer',
+                //  'username' => 'required|max:20|unique:m_user,username,' . $id . ',user_id',
+                //  'nama'     => 'required|max:100',
+                //  'password' => 'nullable|min:6|max:20'
+
+                // -- JS8 - Tugas(m_user) --
+                'level_id' => ['required', 'integer'],
+                'username' => ['required', 'string', 'min:3', 'unique:m_user,username,' . $id . ',user_id'],
+                'nama'     => ['required', 'string', 'max:100'],
+                'password' => ['required', 'min:6'],
              ];
 
              $validator = Validator::make($request->all(), $rules);
@@ -576,4 +595,71 @@ class UserController extends Controller
         }
         return redirect('/');
     }
+        
+    // -- ----------------------------------------------------------------------------------------- --
+    // -- ------------------------------------- *jobsheet 08* ------------------------------------- --
+    // -- JS8 - Tugas(m_user) --
+    public function import() {
+        return view('user.import');
+    }
+
+    // -- JS8 - Tugas(m_user) --
+    public function import_ajax(Request $request) {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                //validasi file harus xls atau xlsx, max 1MB
+                'file_user' => ['required', 'mimes:xlsx', 'max:1024']
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status'    => false,
+                    'message'   => 'Validasi Gagal',
+                    'msgFiled'  => $validator->errors()
+                ]);
+            }
+
+            $file = $request->file('file_user');      //ambil file dari request
+
+            $reader = IOFactory::createReader('Xlsx');  //load reader file excel
+            $reader->setReadDataOnly(true);             //hanya membaca data
+            $spreadsheet = $reader->load($file->getRealPath());     //load file excel
+            $sheet = $spreadsheet->getActiveSheet();                //ambil sheet yang aktif
+
+            $data = $sheet->toArray(null, false, true, true);       //ambil data excel
+
+            $insert = [];
+            if (count($data) > 1) {     //jika data lebih dari satu baris
+                foreach ($data as $baris => $value) {
+                    if ($baris > 1) {   //baris ke 1 adalah header, maka lewati
+                        $insert[] = [
+                            'level_id' => $value['A'],
+                            'username' => $value['B'],
+                            'nama' => $value['C'],
+                            'password' => bcrypt($value['D']),
+                            'created_at' => now(),
+                        ];
+                    }
+                }
+
+                //insert data ke database, jika data sudah ada maka diabaikan
+                if (count($insert) > 0) {
+                    UserModel::insertOrIgnore($insert);
+                }
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diimport'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tidak ada data yang diimport'
+                ]);
+            } 
+        }
+
+        return redirect('/');
+    } 
 }
