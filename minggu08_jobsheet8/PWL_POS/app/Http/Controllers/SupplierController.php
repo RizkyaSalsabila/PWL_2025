@@ -7,6 +7,7 @@ use App\Models\SupplierModel;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SupplierController extends Controller
 {
@@ -414,4 +415,27 @@ class SupplierController extends Controller
         $writer->save('php://output');      // simpan file langsung ke output browser
         exit;       // hentikan eksekusi agar tidak lanjut render halaman lain
     } // end function export_excel
+
+    // -- JS8 - Tugas3(m_supplier) --
+    public function export_pdf() {
+        // ambil data supplier dari database
+        $supplier = SupplierModel::select('supplier_kode','supplier_nama', 'supplier_alamat')
+                    ->orderBy('supplier_kode')     // lalu urutkan berdasarkan supplier_kode
+                    ->get();
+
+        // buat PDF dari view 'supplier.export_pdf' dan kirim data $supplier ke view tersebut
+        $pdf = Pdf::loadView('supplier.export_pdf', ['supplier' => $supplier]);
+        
+        // set ukuran kertas menjadi A4 dan orientasi portrait (tegak)
+        $pdf->setPaper('a4', 'portrait'); 
+
+        // aktifkan opsi agar bisa render gambar dari URL (jika ada gambar dari internet)
+        $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
+        
+        // render PDF
+        $pdf->render();
+
+        // tampilkan PDF di browser (stream), nama file dinamis berdasarkan tanggal & jam
+        return $pdf->stream('Data Supplier '.date('Y-m-d H:i:s').'.pdf');
+    }
 }

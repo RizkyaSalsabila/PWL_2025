@@ -322,6 +322,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
 
         // -- JS8 - Tugas2(m_supplier) --
         Route::get('/export_excel', [SupplierController::class, 'export_excel']);         //export_excel        
+        
+        // -- JS8 - Tugas3(m_supplier) --
+        Route::get('/export_pdf', [SupplierController::class, 'export_pdf']);         //export_pdf 
     });
 
     // (m_barang)

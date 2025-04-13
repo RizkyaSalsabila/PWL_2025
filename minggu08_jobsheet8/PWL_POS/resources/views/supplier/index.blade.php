@@ -12,8 +12,11 @@
 
             {{-- <a class="btn btn-sm btn-primary mt-1" href="{{ url('supplier/create') }}">Tambah</a> --}}
             {{-- JS8 - Tugas2(m_supplier) --}}
-            <a class="btn btn-sm btn-primary mt-1" href="{{ url('supplier/export_excel') }}"><i class="fa fa-file-excel"></i> Export Supplier</a>
+            <a class="btn btn-sm btn-primary mt-1" href="{{ url('supplier/export_excel') }}"><i class="fa fa-file-excel"></i> Export Supplier (Excel)</a>
             
+            {{-- JS8 - Tugas3(m_supplier) --}}
+            <a class="btn btn-sm btn-secondary mt-1" href="{{ url('supplier/export_pdf') }}"><i class="fa fa-file-pdf"></i> Export Supplier (PDF)</a>
+
             {{-- JS6 - Tugas(m_supplier) --}}
             <button onclick="modalAction('{{ url('/supplier/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
         </div>
