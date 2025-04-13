@@ -297,6 +297,10 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::delete('/{id}', [SupplierController::class, 'destroy']);                 //menghapus data supplier
         Route::get('/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']);   //menampilkan form confirm delete supplier ajax
         Route::delete('/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']); //menghapus data supplier ajax
+    
+        // -- JS8 - Tugas(m_supplier) --
+        Route::get('/import', [SupplierController::class, 'import']);                     //ajax form upload excel
+        Route::post('/import_ajax', [SupplierController::class, 'import_ajax']);          //ajax import excel
     });
 
     // (m_barang)
