@@ -292,6 +292,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         
         // -- JS8 - Tugas2(m_kategori) --
         Route::get('/export_excel', [KategoriController::class, 'export_excel']);         //export_excel        
+        
+        // -- JS8 - Tugas3(m_kategori) --
+        Route::get('/export_pdf', [KategoriController::class, 'export_pdf']);         //export_pdf 
     });
 
     // (m_supplier)
