@@ -1,28 +1,22 @@
 {{-- ------------------------------------- *jobsheet 05* ------------------------------------- --}}
 {{-- JS5 - P1(12) --}}
 <!-- Sidebar -->
+{{-- JS8 - Tugas(4) --}}
 <div class="sidebar">
-    {{-- <!-- Sidebar user (optional) -->
+
+    <!-- Sidebar user (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        <a href="{{ url('/profile') }}" class="image mb-2 position-relative">
+          <img src="{{ asset('storage/profiles/' . (Auth::user()->profile_photo ?? 'profile.jpg')) }}" class="img-circle elevation-2" alt="User Image" style="width: 30px; height: 30px; object-fit: cover; border: 2px solid white;">
+        </a>
       </div>
       <div class="info">
-        <a href="#" class="d-block">Alexander Pierce</a>
+        {{-- <a href="#" class="d-block">Alexander Pierce</a> --}}
+        <span style="color:white">{{ Auth::user()->nama }}</span>
+        <p style="color:white"><b>Online</b></p>
       </div>
     </div>
-
-    <!-- SidebarSearch Form -->
-    <div class="form-inline mt-2">
-      <div class="input-group" data-widget="sidebar-search">
-        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-sidebar">
-            <i class="fas fa-search fa-fw"></i>
-          </button>
-        </div>
-      </div>
-    </div> --}}
 
     {{-- JS5 - P2(4) --}}
     <!-- SidebarSearch Form -->
