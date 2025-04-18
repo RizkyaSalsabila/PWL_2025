@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SupplierModel extends Model
 {
@@ -23,4 +24,9 @@ class SupplierModel extends Model
         'supplier_alamat',    
         'supplier_no_hp'
     ];
+
+    // JS4 - 2(Relationship)
+    public function stok(): HasMany {
+        return $this->hasMany(StokModel::class, 'supplier_id', 'supplier_id');
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PenjualanDetailModel extends Model
 {
@@ -23,4 +24,13 @@ class PenjualanDetailModel extends Model
         'harga', 
         'jumlah' 
     ];
+
+    // JS4 - 2(Relationship)
+    public function barang(): BelongsTo {
+        return $this->belongsTo(KategoriModel::class, 'barang_id', 'barang_id');
+    }
+
+    public function penjualan(): BelongsTo {
+        return $this->belongsTo(KategoriModel::class, 'penjualan_id', 'penjualan_id');
+    }
 }

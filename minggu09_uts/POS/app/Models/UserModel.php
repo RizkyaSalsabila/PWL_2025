@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class UserModel extends Model
 {
@@ -24,4 +25,21 @@ class UserModel extends Model
         'nama',
         'password'     
     ];
+
+    // JS4 - 2(Relationship)
+    public function level(): BelongsTo {        //model ini memiliki relasi "dimiliki oleh" (belongsTo) dengan LevelModel
+        return $this->belongsTo(
+            LevelModel::class, 
+            'level_id',         //PARAMETER 1 - foreign key di tabel model saat ini
+            'level_id'          //PARAMETER 2 - primary key di tabel level_models yang menjadi referensi
+        );      
+    }
+
+    public function stok(): HasMany {
+        return $this->hasMany(StokModel::class, 'user_id', 'user_id');
+    }
+
+    public function penjualan(): HasMany {
+        return $this->hasMany(PenjualanModel::class, 'user_id', 'user_id');
+    }
 }
