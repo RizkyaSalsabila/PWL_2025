@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\LevelController;
@@ -59,3 +60,8 @@ Route::get('/supplier', [SupplierController::class, 'index']);
 Route::get('/stok', [StokController::class, 'index']);
 Route::get('/penjualan', [PenjualanController::class, 'index']);
 Route::get('/penjualan_detail', [PenjualanDetailController::class, 'index']);
+// -- ----------------------------------------------------------------------------------------- --
+
+// -- ------------------------------------- *jobsheet 05* ------------------------------------- --
+// -- JS5 - P2(5) --
+Route::get('/', [WelcomeController::class, 'index']);
