@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BarangModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,7 +24,24 @@ class BarangController extends Controller
         // return 'Delete data berhasil, jumlah data yang dihapus: '.$row. ' baris';
 
         //KODE BARU
-        $data = DB::select('select * from m_barang'); // Menampilkan semua data dari tabel 'm_barang'
-        return view('barang', ['data' => $data]);
+        // $data = DB::select('select * from m_barang'); // Menampilkan semua data dari tabel 'm_barang'
+        // return view('barang', ['data' => $data]);
+        // -----------------------------------------------------------------------------------------
+
+        // ------------------------------------- *jobsheet 04* -------------------------------------
+        //menambahkan data baru ke 'm_barang'
+        $data = [
+            'kategori_id' => 6,
+            'barang_kode' => 'BR01F',
+            'barang_nama' => 'Sabun Mandi',
+            'harga_beli' => 2500,
+            'harga_jual' => 3500
+        ];
+
+        BarangModel::create($data);
+
+        //mencoba akses model BarangModel
+        $barang = BarangModel::all();       //ambil semua data dari tabel 'm_barang'
+        return view('barang', ['data' => $barang]);
     }
 }

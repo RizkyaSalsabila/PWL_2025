@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KategoriModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -46,7 +47,22 @@ class KategoriController extends Controller
         return 'Delete data berhasil, jumlah data yang dihapus: '.$row. ' baris';*/
 
         //Menampilkan data di 'm_kategori'
-        $data = DB::table('m_kategori')->get();
-        return view('kategori', ['data' => $data]);
+        // $data = DB::table('m_kategori')->get();
+        // return view('kategori', ['data' => $data]);
+        // -----------------------------------------------------------------------------------------
+
+        // ------------------------------------- *jobsheet 04* -------------------------------------
+        //menambahkan data baru ke 'm_kategori'
+        $data = [
+            'kategori_kode' => 'KT06',
+            'kategori_nama' => 'Perawatan',
+            'deskripsi' => 'Kategori untuk produk-produk perawatan tubuh dan kecantikan'
+        ];
+
+        KategoriModel::create($data);
+
+        //mencoba akses model BarangModel
+        $kategori = KategoriModel::all();       //ambil semua data dari tabel 'm_kategori'
+        return view('kategori', ['data' => $kategori]);
     }
 }
