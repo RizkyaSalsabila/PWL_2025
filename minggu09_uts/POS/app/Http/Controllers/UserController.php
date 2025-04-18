@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -31,5 +33,17 @@ class UserController extends Controller
         //KODE BARU
         $data = DB::select('select * from m_user'); // Menampilkan semua data dari tabel 'm_user'
         return view('user', ['data' => $data]);
+
+        // JS3 - P6(Eloquent ORM)
+        //tambah data user dengan Eloquent
+        $data =[
+            'nama' => 'Pelanggan Pertama'
+        ];
+
+        UserModel::where('username', 'customer-1')->update($data);  //update data user
+
+        //mencoba akses model UserModel
+        $user = UserModel::all();       //ambil semua data dari tabel 'm_user'
+        return view('user', ['data' => $user]);
     }         
 }
