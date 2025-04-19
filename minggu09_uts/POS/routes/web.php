@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\UserController;
@@ -203,6 +204,11 @@ Route::post('register', [AuthController::class, 'postRegister']);
 Route::middleware(['auth'])->group(function() {     //artinya, semua route di dalam group ini harus login dulu
     //masukkan semua route yang perlu autentikasi di sini
     Route::get('/', [WelcomeController::class, 'index']);
+
+    
+    Route::get('/profile', [ProfileController::class, 'profil'])->name('profil');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     
     // Route::group(['prefix' => 'user'], function () {
     // JS7 - P3(multi level-authorization)
