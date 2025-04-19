@@ -110,7 +110,7 @@ class StokController extends Controller
     public function create_ajax() {
         $supplier = SupplierModel::select('supplier_id', 'supplier_nama')->get();
         $barang = BarangModel::select('barang_id', 'barang_nama')->get();
-        $user = UserModel::select('user_id', 'username')->get();
+        $user = UserModel::select('user_id', 'nama')->get();
 
         return view(
             'stok.create_ajax',
@@ -161,7 +161,7 @@ class StokController extends Controller
 
         $supplier = SupplierModel::select('supplier_id', 'supplier_nama')->get();
         $barang = BarangModel::select('barang_id', 'barang_nama')->get();
-        $user = UserModel::select('user_id', 'username')->get();
+        $user = UserModel::select('user_id', 'nama')->get();
 
         return view(
             'stok.edit_ajax', 
@@ -240,5 +240,12 @@ class StokController extends Controller
             }
         }
         return redirect('/');
+    }
+
+    // JS6 - (show_ajax)
+    public function show_ajax(string $id) {
+        $stok = StokModel::with(['supplier', 'barang', 'user'])->find($id);
+
+        return view('stok.show_ajax', ['stok' => $stok]);
     }
 }

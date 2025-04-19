@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Monolog\Level;
 
 class LevelController extends Controller
 {
@@ -208,5 +209,12 @@ class LevelController extends Controller
             }
         }
         return redirect('/');
+    }
+
+    // JS6 - (show_ajax)
+    public function show_ajax(string $id) {
+        $level = LevelModel::find($id);
+
+        return view('level.show_ajax', ['level' => $level]);
     }
 }

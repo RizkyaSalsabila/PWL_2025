@@ -72,7 +72,7 @@ class SupplierController extends Controller
     // Ambil data supplier dalam bentuk json untuk datatables
     public function list(Request $request)
     {
-        $suppliers = SupplierModel::select('supplier_id', 'supplier_kode', 'supplier_nama', 'supplier_alamat');
+        $suppliers = SupplierModel::select('supplier_id', 'supplier_kode', 'supplier_nama', 'supplier_alamat', 'supplier_no_hp');
 
         return DataTables::of($suppliers)
             // menambahkan kolom index / no urut (default nama kolom: DT_RowIndex)
@@ -200,5 +200,12 @@ class SupplierController extends Controller
             }
         }
         return redirect('/');
+    }
+
+    // JS6 - (show_ajax)
+    public function show_ajax(string $id) {
+        $supplier = SupplierModel::find($id);
+
+        return view('supplier.show_ajax', ['supplier' => $supplier]);
     }
 }

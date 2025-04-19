@@ -33,16 +33,16 @@
                     </div>
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
-                            <th class="text-right col-3">Supplier :</th>
+                            <th class="text-right col-3">Nama Supplier :</th>
                             <td class="col-9">{{ $stok->supplier->supplier_nama }}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Barang :</th>
+                            <th class="text-right col-3">Nama Barang :</th>
                             <td class="col-9">{{ $stok->barang->barang_nama }}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">User :</th>
-                            <td class="col-9">{{ $stok->user->username }}</td>
+                            <th class="text-right col-3">Nama User :</th>
+                            <td class="col-9">{{ $stok->user->nama }}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Tanggal :</th>

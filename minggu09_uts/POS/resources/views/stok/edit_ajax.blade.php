@@ -32,7 +32,7 @@
              </div>
              <div class="modal-body">
                 <div class="form-group">
-                    <label>Supplier</label>
+                    <label>Nama Supplier</label>
                     <select name="supplier_id" id="supplier_id" class="form-control" required>
                         <option value="">- Pilih Supplier -</option>
                         @foreach ($supplier as $s)
@@ -42,7 +42,7 @@
                     <small id="error-supplier_id" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
-                    <label>Barang</label>
+                    <label>Nama Barang</label>
                     <select name="barang_id" id="barang_id" class="form-control" required>
                         <option value="">- Pilih Barang -</option>
                         @foreach ($barang as $b)
@@ -52,11 +52,11 @@
                     <small id="error-barang_id" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
-                    <label>User</label>
+                    <label>Nama User</label>
                     <select name="user_id" id="user_id" class="form-control" required>
                         <option value="">- Pilih User -</option>
                         @foreach ($user as $u)
-                            <option {{ ($u->user_id == $stok->user_id)? 'selected' : '' }} value="{{ $u->user_id }}">{{ $u->username }}</option>
+                            <option {{ ($u->user_id == $stok->user_id)? 'selected' : '' }} value="{{ $u->user_id }}">{{ $u->nama }}</option>
                         @endforeach
                     </select>
                     <small id="error-user_id" class="error-text form-text text-danger"></small>

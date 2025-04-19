@@ -83,6 +83,9 @@ Route::group(['prefix' => 'user'], function () {
     // JS6 - P3(hapus_ajax)
     Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);       //menampilkan form confirm delete user ajax
     Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);     //menghapus data user ajax
+
+    // JS6 - (show_ajax)
+    Route::get('/{id}/show_ajax', [UserController::class, 'show_ajax']);        //menampilkan detail user ajax
 });
 
 Route::group(['prefix' => 'level'], function () {
@@ -100,6 +103,9 @@ Route::group(['prefix' => 'level'], function () {
     // JS6 - P3(hapus_ajax)
     Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);       //menampilkan form confirm delete level ajax
     Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']);     //menghapus data level ajax
+
+    // JS6 - (show_ajax)
+    Route::get('/{id}/show_ajax', [LevelController::class, 'show_ajax']);        //menampilkan detail level ajax
 });
 
 Route::group(['prefix' => 'kategori'], function () {
@@ -117,6 +123,9 @@ Route::group(['prefix' => 'kategori'], function () {
     // JS6 - P3(hapus_ajax)
     Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);       //menampilkan form confirm delete kategori ajax
     Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']);     //menghapus data kategori ajax
+
+    // JS6 - (show_ajax)
+    Route::get('/{id}/show_ajax', [KategoriController::class, 'show_ajax']);        //menampilkan detail kategori ajax
 });
 
 Route::group(['prefix' => 'supplier'], function () {
@@ -134,6 +143,9 @@ Route::group(['prefix' => 'supplier'], function () {
     // JS6 - P3(hapus_ajax)
     Route::get('/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']);       //menampilkan form confirm delete supplier ajax
     Route::delete('/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']);     //menghapus data supplier ajax
+
+    // JS6 - (show_ajax)
+    Route::get('/{id}/show_ajax', [SupplierController::class, 'show_ajax']);        //menampilkan detail supplier ajax
 });
 
 Route::group(['prefix' => 'barang'], function () {
@@ -151,6 +163,9 @@ Route::group(['prefix' => 'barang'], function () {
     // JS6 - P3(hapus_ajax)
     Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);       //menampilkan form confirm delete barang ajax
     Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);     //menghapus data barang ajax
+
+    // JS6 - (show_ajax)
+    Route::get('/{id}/show_ajax', [BarangController::class, 'show_ajax']);        //menampilkan detail barang ajax
 });
 
 Route::group(['prefix' => 'stok'], function () {
@@ -168,4 +183,7 @@ Route::group(['prefix' => 'stok'], function () {
     // JS6 - P3(hapus_ajax)
     Route::get('/{id}/delete_ajax', [StokController::class, 'confirm_ajax']);       //menampilkan form confirm delete stok ajax
     Route::delete('/{id}/delete_ajax', [StokController::class, 'delete_ajax']);     //menghapus data stok ajax
+
+    // JS6 - (show_ajax)
+    Route::get('/{id}/show_ajax', [StokController::class, 'show_ajax']);        //menampilkan detail stok ajax
 });

@@ -41,9 +41,9 @@
                     <th>No</th>
                     <th>Tanggal</th>
                     <th>Jumlah</th>
-                    <th>Supplier</th>
-                    <th>Barang</th>
-                    <th>User</th>
+                    <th>Nama Supplier</th>
+                    <th>Nama Barang</th>
+                    <th>Nama User</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -108,7 +108,7 @@
                      searchable: true
                     },
                     {
-                        data: "user.username",
+                        data: "user.nama",
                         orderable: true,
                         searchable: true
                     },

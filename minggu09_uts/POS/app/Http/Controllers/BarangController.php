@@ -219,4 +219,11 @@ class BarangController extends Controller
         }
         return redirect('/');
     }
+
+    // JS6 - (show_ajax)
+    public function show_ajax(string $id) {
+        $barang = BarangModel::with('kategori')->find($id);
+
+        return view('barang.show_ajax', ['barang' => $barang]);
+    }
 }

@@ -221,4 +221,11 @@ class KategoriController extends Controller
         }
         return redirect('/');
     }
+
+    // JS6 - (show_ajax)
+    public function show_ajax(string $id) {
+        $kategori = KategoriModel::find($id);
+
+        return view('kategori.show_ajax', ['kategori' => $kategori]);
+    }
 }
