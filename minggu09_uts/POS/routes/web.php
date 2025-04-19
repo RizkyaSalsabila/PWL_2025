@@ -196,6 +196,10 @@ Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
+// -- JS7 - (register) --
+Route::get('register', [AuthController::class, 'register'])->name('register');
+Route::post('register', [AuthController::class, 'postRegister']);
+
 Route::middleware(['auth'])->group(function() {     //artinya, semua route di dalam group ini harus login dulu
     //masukkan semua route yang perlu autentikasi di sini
     Route::get('/', [WelcomeController::class, 'index']);

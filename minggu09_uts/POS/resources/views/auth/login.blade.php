@@ -66,6 +66,17 @@
                             <!-- /.col -->
                         </div>
                     </form>
+
+                    {{-- JS7 - (register) --}}
+                    <div class="mt-3 text-center">
+                        <p>
+                        Belum punya akun ? 
+                        <a href="{{ route('register') }}">
+                            Daftar sekarang
+                        </a>
+                        </p>
+                    </div>
+
                 </div>
                 <!-- /.card-body -->
             </div>
