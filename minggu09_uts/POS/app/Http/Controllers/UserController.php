@@ -143,7 +143,7 @@ class UserController extends Controller
         // cek apakah request berupa ajax
         if($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'level_id' => 'required|integer',
+                'level_id' => 'required|integer|exists:m_level,level_id',
                 'username' => 'required|string|min:3|unique:m_user,username',
                 'nama'     => 'required|string|max:100',
                 'password' => 'required|min:6'
@@ -172,4 +172,56 @@ class UserController extends Controller
     
         redirect('/');
     } 
+
+    // JS6 - P2(edit_ajax)
+    //menampilkan halaman form edit user ajax
+    public function edit_ajax(string $id) {
+        $user = UserModel::find($id);
+        $level = LevelModel::select('level_id', 'level_nama')->get();
+
+        return view('user.edit_ajax', ['user' => $user, 'level' => $level]);
+    }
+
+    // JS6 - P2(edit_ajax)
+    public function update_ajax(Request $request, $id)
+     {
+         // cek apakah request dari ajax
+         if ($request->ajax() || $request->wantsJson()) {
+             $rules = [
+                 'level_id' => 'required|integer|exists:m_level,level_id',
+                 'username' => 'required|max:20|unique:m_user,username,' . $id . ',user_id',
+                 'nama'     => 'required|max:100',
+                 'password' => 'nullable|min:6|max:20'
+             ];
+
+             $validator = Validator::make($request->all(), $rules);
+
+             if ($validator->fails()) {
+                 return response()->json([
+                     'status' => false, // respon json, true: berhasil, false: gagal
+                     'message' => 'Validasi gagal.',
+                     'msgField' => $validator->errors() // menunjukkan field mana yang error
+                 ]);
+             }
+
+             $check = UserModel::find($id);
+             if ($check) {
+                 if (!$request->filled('password')) { // jika password tidak diisi, maka hapus dari request
+                     $request->request->remove('password');
+                 }
+
+                 $check->update($request->all());
+                 return response()->json([
+                     'status' => true,
+                     'message' => 'Data berhasil diupdate'
+                 ]);
+             } else {
+                 return response()->json([
+                     'status' => false,
+                     'message' => 'Data tidak ditemukan'
+                 ]);
+             }
+         }
+         return redirect('/');
+     }
 }

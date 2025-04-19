@@ -153,4 +153,64 @@ class StokController extends Controller
     
         redirect('/');
     }
+
+    // JS6 - P2(edit_ajax)
+    //menampilkan halaman form edit stok ajax
+    public function edit_ajax(string $id) {
+        $stok = StokModel::find($id);
+
+        $supplier = SupplierModel::select('supplier_id', 'supplier_nama')->get();
+        $barang = BarangModel::select('barang_id', 'barang_nama')->get();
+        $user = UserModel::select('user_id', 'username')->get();
+
+        return view(
+            'stok.edit_ajax', 
+            [
+                'stok' => $stok,
+                'supplier' => $supplier,
+                'barang' => $barang,
+                'user' => $user
+            ]
+        );
+    }
+
+    // JS6 - P2(edit_ajax)
+    public function update_ajax(Request $request, $id)
+    {
+        // cek apakah request dari ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [ 
+                'stok_tanggal' => 'required|date',
+                'stok_jumlah' => 'required|integer|min:1',
+                'supplier_id' => 'required|integer|exists:m_supplier,supplier_id',
+                'barang_id' => 'required|integer|exists:m_barang,barang_id',
+                'user_id' => 'required|integer|exists:m_user,user_id'
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false, // respon json, true: berhasil, false: gagal
+                    'message' => 'Validasi gagal.',
+                    'msgField' => $validator->errors() // menunjukkan field mana yang error
+                ]);
+            }
+
+            $stok = StokModel::find($id);
+            if ($stok) {
+                $stok->update($request->all());
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diupdate'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
 }

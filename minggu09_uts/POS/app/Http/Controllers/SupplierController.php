@@ -125,4 +125,51 @@ class SupplierController extends Controller
     
         redirect('/');
     }   
+
+    // JS6 - P2(edit_ajax)
+    //menampilkan halaman form edit supplier ajax
+    public function edit_ajax(string $id) {
+        $supplier = SupplierModel::find($id);
+
+        return view('supplier.edit_ajax', ['supplier' => $supplier]);
+    }
+
+    // JS6 - P2(edit_ajax)
+    public function update_ajax(Request $request, $id)
+    {
+        // cek apakah request dari ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [ 
+                'supplier_kode'     => 'required|string|max:10|unique:m_supplier,supplier_kode,' . $id . ',supplier_id',      
+                'supplier_nama'     => 'required|string|max:100',   
+                'supplier_alamat'   => 'required|string|max:255',
+                'supplier_no_hp'    => 'required|string|max:20' 
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false, // respon json, true: berhasil, false: gagal
+                    'message' => 'Validasi gagal.',
+                    'msgField' => $validator->errors() // menunjukkan field mana yang error
+                ]);
+            }
+
+            $supplier = SupplierModel::find($id);
+            if ($supplier) {
+                $supplier->update($request->all());
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diupdate'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
 }

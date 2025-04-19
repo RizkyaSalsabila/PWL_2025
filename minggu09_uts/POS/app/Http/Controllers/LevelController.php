@@ -135,4 +135,49 @@ class LevelController extends Controller
     
         redirect('/');
     } 
+
+    // JS6 - P2(edit_ajax) 
+    //menampilkan halaman form edit level ajax
+    public function edit_ajax(string $id) {
+        $level = LevelModel::find($id);
+
+        return view('level.edit_ajax', ['level' => $level]);
+    }
+
+    // JS6 - P2(edit_ajax)
+    public function update_ajax(Request $request, $id)
+    {
+        // cek apakah request dari ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+               'level_kode'  => 'required|string|max:10|unique:m_level,level_kode,' . $id . ',level_id',     
+               'level_nama'  => 'required|string|max:100',  
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false, // respon json, true: berhasil, false: gagal
+                    'message' => 'Validasi gagal.',
+                    'msgField' => $validator->errors() // menunjukkan field mana yang error
+                ]);
+            }
+
+            $level = LevelModel::find($id);
+            if ($level) {
+                $level->update($request->all());
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diupdate'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
 }
