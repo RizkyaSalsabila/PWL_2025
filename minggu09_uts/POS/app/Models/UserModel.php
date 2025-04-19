@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable; 
 
-class UserModel extends Model
+class UserModel extends Authenticatable 
+// class UserModel extends Model
 {
     use HasFactory;
     // ------------------------------------- *jobsheet 03* -------------------------------------
@@ -23,8 +25,14 @@ class UserModel extends Model
         'level_id', 
         'username',
         'nama',
-        'password'     
+        'password',
+        'created_at',
+        'updated_at'  
     ];
+
+    // JS7 - P1(authentication)
+    protected $hidden = ['password'];   //jangan ditampilkan saat select
+    protected $casts = ['password' => 'hashed'];  //casting password agar otomatis di hash 
 
     // JS4 - 2(Relationship)
     public function level(): BelongsTo {        //model ini memiliki relasi "dimiliki oleh" (belongsTo) dengan LevelModel
