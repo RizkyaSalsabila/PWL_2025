@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\PenjualanModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class PenjualanController extends Controller
 {

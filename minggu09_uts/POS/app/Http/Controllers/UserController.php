@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LevelModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -49,17 +52,124 @@ class UserController extends Controller
 
         // ------------------------------------- *jobsheet 04* -------------------------------------
         //menambahkan data baru ke 'm_user'
-        $data = [
-            'level_id' => 2,
-            'username' => 'manager_dua',
-            'nama' => 'Manager 2',
-            'password' => Hash::make('12345')
-        ];
+        // $data = [
+        //     'level_id' => 2,
+        //     'username' => 'manager_dua',
+        //     'nama' => 'Manager 2',
+        //     'password' => Hash::make('12345')
+        // ];
 
-        UserModel::create($data);
+        // UserModel::create($data);
 
-        //mencoba akses model UserModel
-        $user = UserModel::all();       //ambil semua data dari tabel 'm_user'
-        return view('user', ['data' => $user]);
-    }         
+        // //mencoba akses model UserModel
+        // $user = UserModel::all();       //ambil semua data dari tabel 'm_user'
+        // return view('user', ['data' => $user]);
+        // -----------------------------------------------------------------------------------------
+
+        // ------------------------------------- *jobsheet 05* -------------------------------------
+
+        //menampilkan halaman awal user 
+            $breadcrumb = (object) [
+                'title' => 'Daftar User',
+                'list'  => ['Home', 'User']
+            ];
+
+            $page = (object) [
+                'title' => 'Daftar User yang terdaftar dalam sistem'
+            ];
+
+            $activeMenu = 'user';   //set menu yang sedang aktif
+
+            // JS5 - P4(filter)
+            $level = LevelModel::all();
+
+            return view(
+                'user.index', 
+                [
+                    'breadcrumb' => $breadcrumb, 
+                    'page' => $page, 
+                    'activeMenu' => $activeMenu,
+                    'level' => $level
+                    ]
+            );
+        }     
+    
+    // Ambil data user dalam bentuk json untuk datatables
+    public function list(Request $request)
+    {
+        $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
+                        ->with('level');
+
+        // JS5 - P4(filter)
+        //filter data user berdasarkan level_id
+        if ($request->level_id) {
+            $users->where('level_id', $request->level_id);
+        }
+
+        return DataTables::of($users)
+            // menambahkan kolom index / no urut (default nama kolom: DT_RowIndex)
+            ->addIndexColumn()
+            // menambahkan kolom aksi
+            ->addColumn('aksi', function ($user) {
+                // $btn = '<a href="' . url('/user/' . $user->user_id) . '" class="btn btn-info btn-sm">Detail</a>';
+                // $btn .= ' <a href="' . url('/user/' . $user->user_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a>';
+                // $btn .= ' <form class="d-inline-block" method="POST" action="' . url('/user/' . $user->user_id) . '">'
+                //     . csrf_field()
+                //     . method_field('DELETE')
+                //     . '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\')">Hapus</button>'
+                //     . '</form>';
+
+                // JS6 - P2(2)
+                $btn  = '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
+                $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/delete_ajax').'\')"  class="btn btn-danger btn-sm">Hapus</button> '; 
+
+                return $btn;
+            })
+            ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html
+            ->make(true);
+    }
+
+    // -- ------------------------------------- *jobsheet 06* ------------------------------------- --
+    // JS6 - P1(tambah_ajax)
+    public function create_ajax() {
+        $level = LevelModel::select('level_id', 'level_nama')->get();
+
+        return view('user.create_ajax')->with('level', $level);
+    }
+
+    // JS6 - P1(tambah_ajax)
+    public function store_ajax(Request $request) {
+        // cek apakah request berupa ajax
+        if($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'level_id' => 'required|integer',
+                'username' => 'required|string|min:3|unique:m_user,username',
+                'nama'     => 'required|string|max:100',
+                'password' => 'required|min:6'
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+    
+            if($validator->fails()) {
+                return response()->json([
+                    'status' => false, // response status, false: error/gagal, true: berhasil
+                    'message' => 'Validasi gagal',
+                    'msgField' => $validator->errors(), // pesan error validasi
+                ]);
+            }
+
+            $dataBaru = $request->all();
+            $dataBaru['password'] = Hash::make($request->password);
+
+            UserModel::create($dataBaru);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data user berhasil disimpan'
+            ]);
+        }
+    
+        redirect('/');
+    } 
 }
