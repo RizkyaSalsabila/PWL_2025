@@ -34,6 +34,24 @@ class UserModel extends Authenticatable
     protected $hidden = ['password'];   //jangan ditampilkan saat select
     protected $casts = ['password' => 'hashed'];  //casting password agar otomatis di hash 
 
+    // JS7 - P2(authorization)
+    //untuk mendapatkan nama role
+    public function getRoleName(): string {
+        return $this->level->level_nama;
+    }
+
+    // JS7 - P2(authorization)
+    //untuk mengecek apakah user memiliki role tertentu
+    public function hasRole($role): bool {
+        return $this->level->level_kode == $role;
+    }
+
+    // JS7 - P3(multi level-authorization)
+    //untuk mendapatkan kode role
+    public function getRole() {
+        return $this->level->level_kode;
+    }
+
     // JS4 - 2(Relationship)
     public function level(): BelongsTo {        //model ini memiliki relasi "dimiliki oleh" (belongsTo) dengan LevelModel
         return $this->belongsTo(

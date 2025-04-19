@@ -97,6 +97,39 @@
                 <p>Supplier Barang</p>
             </a>
         </li>
+
+        {{-- JS7 - P2(authorization) --}}
+        <li class="nav-item" style="margin-top: 155px;">
+          <a href="#" class="nav-link" onclick="confirmLogout(event)">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>Logout</p>
+          </a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              @csrf
+          </form>
+      </li>
     </ul>
   </nav>
 </div>
+
+@push('js')
+<script>
+    function confirmLogout(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Apakah yakin ingin keluar dari sistem?',
+            text: "Sesi Anda akan diakhiri.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, logout',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+</script>
+@endpush

@@ -200,7 +200,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
     //masukkan semua route yang perlu autentikasi di sini
     Route::get('/', [WelcomeController::class, 'index']);
     
-    Route::group(['prefix' => 'user'], function () {
+    // Route::group(['prefix' => 'user'], function () {
+    // JS7 - P3(multi level-authorization)
+    Route::prefix('user')->middleware(['authorize:ADM'])->group(function () {
         Route::get('/', [UserController::class, 'index']);      //menampilkan halaman user
         Route::post('/list', [UserController::class, 'list']);      //menampilkan data user dalam bentuk json untuk datatable
         
@@ -220,7 +222,8 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::get('/{id}/show_ajax', [UserController::class, 'show_ajax']);        //menampilkan detail user ajax
     });
     
-    Route::group(['prefix' => 'level'], function () {
+    // Route::group(['prefix' => 'level'], function () {
+    Route::prefix('level')->middleware(['authorize:ADM'])->group(function () {
         Route::get('/', [LevelController::class, 'index']);      //menampilkan halaman level
         Route::post('/list', [LevelController::class, 'list']);      //menampilkan data level dalam bentuk json untuk datatables
     
@@ -240,7 +243,8 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::get('/{id}/show_ajax', [LevelController::class, 'show_ajax']);        //menampilkan detail level ajax
     });
     
-    Route::group(['prefix' => 'kategori'], function () {
+    // Route::group(['prefix' => 'kategori'], function () {
+    Route::prefix('kategori')->middleware(['authorize:ADM,MNG'])->group(function () {
         Route::get('/', [KategoriController::class, 'index']);      //menampilkan halaman kategori
         Route::post('/list', [KategoriController::class, 'list']);      //menampilkan data kategori dalam bentuk json untuk datatables
     
@@ -260,7 +264,8 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::get('/{id}/show_ajax', [KategoriController::class, 'show_ajax']);        //menampilkan detail kategori ajax
     });
     
-    Route::group(['prefix' => 'supplier'], function () {
+    // Route::group(['prefix' => 'supplier'], function () {
+    Route::prefix('supplier')->middleware(['authorize:ADM,MNG'])->group(function () {
         Route::get('/', [SupplierController::class, 'index']);      //menampilkan halaman supplier
         Route::post('/list', [SupplierController::class, 'list']);      //menampilkan data supplier dalam bentuk json untuk datatables
     
@@ -280,7 +285,8 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::get('/{id}/show_ajax', [SupplierController::class, 'show_ajax']);        //menampilkan detail supplier ajax
     });
     
-    Route::group(['prefix' => 'barang'], function () {
+    // Route::group(['prefix' => 'barang'], function () {
+    Route::prefix('barang')->middleware(['authorize:ADM,MNG,STF'])->group(function() {
         Route::get('/', [BarangController::class, 'index']);      //menampilkan halaman barang
         Route::post('/list', [BarangController::class, 'list']);      //menampilkan data barang dalam bentuk json untuk datatables
      
