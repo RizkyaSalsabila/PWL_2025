@@ -1,19 +1,18 @@
 {{-- ------------------------------------- *jobsheet 05* ------------------------------------- --}}
 {{-- JS5 - P1(12) --}}
 <!-- Sidebar -->
-<div class="main-sidebar sidebar-dark-primary elevation-4" style="position: fixed; top: 0; bottom: 0; height: 100vh; overflow-y: auto;">
   <div class="sidebar">
     <!-- Sidebar user (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="user-panel mt-3 mb-3 d-flex">
       <div class="image">
         <a href="{{ url('/profile') }}" class="image mb-2 position-relative">
-          <img src="{{ asset('storage/profiles/' . (Auth::user()->profile_photo ?? 'profile.jpg')) }}" class="img-circle elevation-2" alt="User Image" style="width: 30px; height: 30px; object-fit: cover; border: 2px solid white;">
+          <img src="{{ asset('storage/profiles/' . (Auth::user()->profile_photo ?? 'profile.jpg')) }}" class="img-circle elevation-2" alt="User Image" style="width: 50px; height: 50px; object-fit: cover; border: 2px solid white;">
         </a>
       </div>
       <div class="info">
         {{-- <a href="#" class="d-block">Alexander Pierce</a> --}}
-        <span style="color:white">{{ Auth::user()->nama }}</span>
-        <p style="color:white"><b>Online</b></p>
+        <h5><span style="color:rgb(0, 183, 255)"><b>{{ Auth::user()->nama }}</b></span></h5>
+        <p style="color:rgb(0, 183, 255)">Online</p>
       </div>
     </div>
 
@@ -104,7 +103,6 @@
     </ul>
   </nav>
   </div>
-</div>
 
 @push('js')
 <script>

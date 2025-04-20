@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Anda Sebagai :</label>
+                    <label>Petugas :</label>
                     <select name="user_id" id="user_id" class="form-control" disabled>
                         <option value="{{ $user->user_id }}" selected>{{ $user->nama }} ({{ $user->level->level_nama }})
                         </option>
@@ -39,9 +39,14 @@
                     <small id="error-penjualan-tanggal" class="error-text form-text text-danger"></small>
                 </div>
                 <hr>
-                <h6>Detail Barang</h6>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detail Barang</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div id="detail-container">
-                    <div class="form-row detail-item">
+                    <div class="form-row detail-item mb-4">
                         <div class="col-md-4">
                             <label>Barang</label>
                             <select name="barang_id[]" class="form-control">
@@ -55,33 +60,33 @@
                         </div>
                         <div class="col-md-2">
                             <label>Harga</label>
-                            <input type="number" name="harga[]" class="form-control" readonly required>
+                            <input type="number" name="harga[]" class="form-control"  placeholder="0" readonly required>
                         </div>
                         <div class="col-md-2">
                             <label>Jumlah</label>
-                            <input type="number" name="jumlah[]" class="form-control" required>
+                            <input type="number" name="jumlah[]" class="form-control" placeholder="0" required>
                         </div>
                         <div class="col-md-2">
                             <label>Subtotal</label>
-                            <input type="text" name="subtotal[]" class="form-control subtotal" readonly>
+                            <input type="text" name="subtotal[]" class="form-control subtotal" placeholder="0" readonly>
                         </div>
                         <div class="col-md-2 d-flex align-items-end">
                             <button type="button" class="btn btn-danger remove-detail">Hapus</button>
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-secondary my-2 #btn-tambah-detail  w-100" id="btn-tambah-detail">+
+                <button type="button" class="btn btn-info my-2 #btn-tambah-detail  w-100" id="btn-tambah-detail">+
                     Tambah Barang</button>
                 <div class=" text-left mt-3 ">
                     <label><strong>Total Keseluruhan:</strong></label>
-                    <input type="text" id="totalKeseluruhan" class="form-control font-weight-bold text-left" readonly>
+                    <input type="text" id="totalKeseluruhan" class="form-control font-weight-bold text-left" placeholder="0" readonly>
                 </div>
 
             </div>
 
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
             </div>
         </div>
     </div>

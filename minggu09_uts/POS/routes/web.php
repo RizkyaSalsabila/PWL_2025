@@ -346,7 +346,7 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::get('/export_excel', [BarangController::class, 'export_excel']);         //export_excel
     });
     
-    Route::group(['prefix' => 'stok'], function () {
+    Route::prefix('stok')->middleware(['authorize:ADM,MNG,STF'])->group(function() {
         Route::get('/', [StokController::class, 'index']);      //menampilkan halaman stok
         Route::post('/list', [StokController::class, 'list']);      //menampilkan data stok dalam bentuk json untuk datatables
      
@@ -372,7 +372,7 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::get('/export_excel', [StokController::class, 'export_excel']);         //export_excel
     });   
 
-    Route::group(['prefix' => 'penjualan'], function () {
+    Route::prefix('penjualan')->middleware(['authorize:ADM,MNG,STF'])->group(function() {
         Route::get('/', [PenjualanController::class, 'index']);      //menampilkan halaman penjualan
         Route::post('/list', [PenjualanController::class, 'list']);      //menampilkan data penjualan dalam bentuk json untuk datatables
      
