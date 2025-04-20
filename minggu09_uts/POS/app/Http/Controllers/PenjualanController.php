@@ -278,12 +278,12 @@ class PenjualanController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    'message' => 'Data penjualan berhasil diupdate.'
+                    'message' => 'Data penjualan berhasil diperbarui.'
                 ]);
             } catch (\Exception $e) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Gagal menyimpan data.',
+                    'message' => 'Data penjualan gagal diperbarui.',
                     'msgField' => ['exception' => [$e->getMessage()]]
                 ]);
             }

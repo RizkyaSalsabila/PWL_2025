@@ -108,7 +108,7 @@ class BarangController extends Controller
     // -- ------------------------------------- *jobsheet 06* ------------------------------------- --
     // JS6 - P1(tambah_ajax)
     public function create_ajax() {
-        $kategori = KategoriModel::select('kategori_id', 'nama_kategori')->get();
+        $kategori = KategoriModel::select('kategori_id', 'kategori_nama')->get();
 
         return view('barang.create_ajax')->with('kategori', $kategori);
     }

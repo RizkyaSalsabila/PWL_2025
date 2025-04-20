@@ -30,24 +30,24 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Anda Sebagai:</label>
+                        <label>Petugas:</label>
                         <select name="user_id" class="form-control" disabled>
                             <option value="{{ $user->user_id }}" selected>{{ $user->nama }} ({{ $user->level->level_nama }})</option>
                         </select>
                         <input type="hidden" name="user_id" value="{{ $user->user_id }}">
                         <small class="form-text text-muted">User sebelumnya: {{ $penjualan->user->nama }}</small>
-                        <small id="error-user-id" class="error-text text-danger"></small>
-                    </div>
-                    <div class="form-group">
-                        <label>Nama Pembeli</label>
-                        <input type="text" name="pembeli" class="form-control" value="{{ $penjualan->pembeli }}" required>
-                        <small id="error-pembeli" class="error-text text-danger"></small>
+                        <small id="error-user_id" class="error-text text-danger"></small>
                     </div>
                     <div class="form-group">
                         <label>Tanggal Penjualan</label>
                         <input type="datetime-local" name="penjualan_tanggal" class="form-control"
                             value="{{ \Carbon\Carbon::parse($penjualan->penjualan_tanggal)->format('Y-m-d\TH:i') }}" required>
-                        <small id="error-penjualan-tanggal" class="error-text text-danger"></small>
+                        <small id="error-penjualan_tanggal" class="error-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Pembeli</label>
+                        <input type="text" name="pembeli" class="form-control" value="{{ $penjualan->pembeli }}" required>
+                        <small id="error-pembeli" class="error-text text-danger"></small>
                     </div>
                 </div>
                 <div class="modal-footer">
