@@ -27,10 +27,10 @@ class PenjualanDetailModel extends Model
 
     // JS4 - 2(Relationship)
     public function barang(): BelongsTo {
-        return $this->belongsTo(KategoriModel::class, 'barang_id', 'barang_id');
+        return $this->belongsTo(BarangModel::class, 'barang_id', 'barang_id');
     }
 
     public function penjualan(): BelongsTo {
-        return $this->belongsTo(KategoriModel::class, 'penjualan_id', 'penjualan_id');
+        return $this->belongsTo(PenjualanModel::class, 'penjualan_id', 'penjualan_id');
     }
 }

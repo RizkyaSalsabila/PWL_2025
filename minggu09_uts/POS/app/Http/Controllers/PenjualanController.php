@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class PenjualanController extends Controller
@@ -216,11 +217,34 @@ class PenjualanController extends Controller
         }
         return redirect('/');
     }
-
+    
     // JS6 - (show_ajax)
     public function show_ajax(string $id) {
         $penjualan = PenjualanModel::with('user')->find($id);
 
         return view('penjualan.show_ajax', ['penjualan' => $penjualan]);
+    }
+    // -- ----------------------------------------------------------------------------------------- --
+
+    // -- ------------------------------------- *jobsheet 08* ------------------------------------- --
+    public function export_pdf(){
+        $penjualan = PenjualanModel::select(
+            'penjualan_kode',
+            'penjualan_tanggal',
+            'pembeli',
+            'user_id'
+        )
+            ->orderBy('penjualan_id')
+            ->orderBy('penjualan_kode')
+            ->get();
+
+
+        // use Barryvdh\DomPDF\Facade\Pdf;
+        $pdf = PDF::loadView('penjualan.export_pdf', ['penjualan' => $penjualan]);
+        $pdf->setPaper('A4', 'portrait'); // set ukuran kertas dan orientasi
+        $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
+        $pdf->render(); // render pdf
+
+        return $pdf->stream('Data Penjualan '.date('Y-m-d H-i-s').'.pdf');
     }
 }

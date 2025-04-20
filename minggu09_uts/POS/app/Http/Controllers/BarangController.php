@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BarangController extends Controller
 {
@@ -225,5 +226,31 @@ class BarangController extends Controller
         $barang = BarangModel::with('kategori')->find($id);
 
         return view('barang.show_ajax', ['barang' => $barang]);
+    }
+    // -- ----------------------------------------------------------------------------------------- --
+
+    // -- ------------------------------------- *jobsheet 08* ------------------------------------- --
+    public function export_pdf() {
+        // ambil data barang dari database beserta relasi kategori
+        $barang = BarangModel::select('kategori_id','barang_kode','barang_nama','harga_beli','harga_jual')
+                    ->orderBy('kategori_id')     // urutkan berdasarkan kategori_id
+                    ->orderBy('barang_kode')     // lalu urutkan berdasarkan barang_kode
+                    ->with('kategori')          // ambil relasi kategori 
+                    ->get();
+
+        // buat PDF dari view 'barang.export_pdf' dan kirim data $barang ke view tersebut
+        $pdf = Pdf::loadView('barang.export_pdf', ['barang' => $barang]);
+        
+        // set ukuran kertas menjadi A4 dan orientasi portrait (tegak)
+        $pdf->setPaper('a4', 'portrait'); 
+
+        // aktifkan opsi agar bisa render gambar dari URL (jika ada gambar dari internet)
+        $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
+       
+        // render PDF
+        $pdf->render();
+
+        // tampilkan PDF di browser (stream), nama file dinamis berdasarkan tanggal & jam
+        return $pdf->stream('Data Barang '.date('Y-m-d H:i:s').'.pdf');
     }
 }

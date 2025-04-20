@@ -1,5 +1,5 @@
 {{-- ------------------------------------- *jobsheet 08* ------------------------------------- --}}
-{{-- JS8 - Tugas3(m_kategori) --}}
+{{-- JS8 - P3(6) --}}
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -97,23 +97,27 @@
             </tr>
         </table>
 
-        <h3 class="text-center">LAPORAN DATA KATEGORI</h4>
+        <h3 class="text-center">LAPORAN DATA BARANG</h4>
         <table class="border-all">
             <thead>
                 <tr class="text-center">
-                    <th style="width:5%" class="text-center">No</th>
-                    <th style="width:15%">Kode Kategori</th>
-                    <th style="width:20%">Nama Kategori</th>
-                    <th style="width:30%">Deskripsi Kategori</th>
+                    <th style="width:5%">No</th>
+                    <th style="width:20%">Kode Barang</th>
+                    <th style="width:20%">Nama Barang</th>
+                    <th style="width:18%" class="text-right">Harga Beli</th>
+                    <th style="width:18%" class="text-right">Harga Jual</th>
+                    <th style="width:30%">Kategori</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($kategori as $k)
+                @foreach($barang as $b)
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $k->kode_kategori }}</td>
-                    <td>{{ $k->nama_kategori }}</td>
-                    <td>{{ $k->deskripsi }}</td>
+                    <td>{{ $b->barang_kode }}</td>
+                    <td>{{ $b->barang_nama }}</td>
+                    <td class="text-right">{{ number_format($b->harga_beli, 0, ',', '.') }}</td>
+                    <td class="text-right">{{ number_format($b->harga_jual, 0, ',', '.') }}</td>
+                    <td>{{ $b->kategori->kategori_nama }}</td>
                 </tr>
                 @endforeach
             </tbody>

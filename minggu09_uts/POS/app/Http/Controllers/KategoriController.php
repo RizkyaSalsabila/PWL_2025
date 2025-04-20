@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KategoriController extends Controller
 {
@@ -227,5 +228,29 @@ class KategoriController extends Controller
         $kategori = KategoriModel::find($id);
 
         return view('kategori.show_ajax', ['kategori' => $kategori]);
+    }
+    // -- ----------------------------------------------------------------------------------------- --
+
+    // -- ------------------------------------- *jobsheet 08* ------------------------------------- --
+    public function export_pdf() {
+        // ambil data kategori dari database
+        $kategori = KategoriModel::select('kategori_kode','kategori_nama', 'deskripsi')
+                    ->orderBy('kategori_kode')     // lalu urutkan berdasarkan kode_kategori
+                    ->get();
+
+        // buat PDF dari view 'kategori.export_pdf' dan kirim data $kategori ke view tersebut
+        $pdf = Pdf::loadView('kategori.export_pdf', ['kategori' => $kategori]);
+        
+        // set ukuran kertas menjadi A4 dan orientasi portrait (tegak)
+        $pdf->setPaper('a4', 'portrait'); 
+
+        // aktifkan opsi agar bisa render gambar dari URL (jika ada gambar dari internet)
+        $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
+        
+        // render PDF
+        $pdf->render();
+
+        // tampilkan PDF di browser (stream), nama file dinamis berdasarkan tanggal & jam
+        return $pdf->stream('Data Kategori '.date('Y-m-d H:i:s').'.pdf');
     }
 }

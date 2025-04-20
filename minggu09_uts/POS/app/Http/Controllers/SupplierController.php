@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class SupplierController extends Controller
 {
@@ -207,5 +209,29 @@ class SupplierController extends Controller
         $supplier = SupplierModel::find($id);
 
         return view('supplier.show_ajax', ['supplier' => $supplier]);
+    }
+    // -- ----------------------------------------------------------------------------------------- --
+
+    // -- ------------------------------------- *jobsheet 08* ------------------------------------- --
+    public function export_pdf() {
+        // ambil data supplier dari database
+        $supplier = SupplierModel::select('supplier_kode','supplier_nama', 'supplier_alamat', 'supplier_no_hp')
+                    ->orderBy('supplier_kode')     // lalu urutkan berdasarkan supplier_kode
+                    ->get();
+
+        // buat PDF dari view 'supplier.export_pdf' dan kirim data $supplier ke view tersebut
+        $pdf = Pdf::loadView('supplier.export_pdf', ['supplier' => $supplier]);
+        
+        // set ukuran kertas menjadi A4 dan orientasi portrait (tegak)
+        $pdf->setPaper('a4', 'portrait'); 
+
+        // aktifkan opsi agar bisa render gambar dari URL (jika ada gambar dari internet)
+        $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
+        
+        // render PDF
+        $pdf->render();
+
+        // tampilkan PDF di browser (stream), nama file dinamis berdasarkan tanggal & jam
+        return $pdf->stream('Data Supplier '.date('Y-m-d H:i:s').'.pdf');
     }
 }

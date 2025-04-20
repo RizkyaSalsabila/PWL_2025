@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class StokController extends Controller
 {
@@ -247,5 +248,28 @@ class StokController extends Controller
         $stok = StokModel::with(['supplier', 'barang', 'user'])->find($id);
 
         return view('stok.show_ajax', ['stok' => $stok]);
+    }
+    // -- ----------------------------------------------------------------------------------------- --
+
+    // -- ------------------------------------- *jobsheet 08* ------------------------------------- --
+    public function export_pdf(){
+        $stok = StokModel::select(
+            'stok_tanggal',
+            'stok_jumlah',
+            'supplier_id',
+            'barang_id',
+            'user_id'
+        )
+        ->orderBy('barang_id')
+        ->orderBy('stok_tanggal')
+        ->with(['supplier', 'barang', 'user'])
+        ->get();
+        
+        $pdf = PDF::loadView('stok.export_pdf', ['stok' => $stok]);
+        $pdf->setPaper('A4', 'portrait'); // set ukuran kertas dan orientasi
+        $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
+        $pdf->render(); // render pdf
+
+        return $pdf->stream('Data Stok Barang '.date('Y-m-d H-i-s').'.pdf');
     }
 }

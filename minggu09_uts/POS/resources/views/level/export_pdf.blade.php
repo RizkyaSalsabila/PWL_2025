@@ -1,5 +1,4 @@
 {{-- ------------------------------------- *jobsheet 08* ------------------------------------- --}}
-{{-- JS8 - Tugas3(m_kategori) --}}
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -97,23 +96,21 @@
             </tr>
         </table>
 
-        <h3 class="text-center">LAPORAN DATA KATEGORI</h4>
+        <h3 class="text-center">LAPORAN DATA LEVEL</h4>
         <table class="border-all">
             <thead>
                 <tr class="text-center">
                     <th style="width:5%" class="text-center">No</th>
-                    <th style="width:15%">Kode Kategori</th>
-                    <th style="width:20%">Nama Kategori</th>
-                    <th style="width:30%">Deskripsi Kategori</th>
+                    <th style="width:15%">Kode Level</th>
+                    <th style="width:20%">Nama Level</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($kategori as $k)
+                @foreach($level as $l)
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $k->kode_kategori }}</td>
-                    <td>{{ $k->nama_kategori }}</td>
-                    <td>{{ $k->deskripsi }}</td>
+                    <td>{{ $l->level_kode }}</td>
+                    <td>{{ $l->level_nama }}</td>
                 </tr>
                 @endforeach
             </tbody>

@@ -1,5 +1,4 @@
 {{-- ------------------------------------- *jobsheet 08* ------------------------------------- --}}
-{{-- JS8 - Tugas3(m_kategori) --}}
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -97,23 +96,27 @@
             </tr>
         </table>
 
-        <h3 class="text-center">LAPORAN DATA KATEGORI</h4>
+        <h3 class="text-center">LAPORAN DATA STOK</h4>
         <table class="border-all">
             <thead>
                 <tr class="text-center">
                     <th style="width:5%" class="text-center">No</th>
-                    <th style="width:15%">Kode Kategori</th>
-                    <th style="width:20%">Nama Kategori</th>
-                    <th style="width:30%">Deskripsi Kategori</th>
+                    <th style="width:30%">Tanggal</th>
+                    <th style="width:15%">Jumlah</th>
+                    <th style="width:30%">Nama Supplier</th>
+                    <th style="width:30%">Nama Barang</th>
+                    <th style="width:25%">Nama User</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($kategori as $k)
+                @foreach($stok as $s)
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $k->kode_kategori }}</td>
-                    <td>{{ $k->nama_kategori }}</td>
-                    <td>{{ $k->deskripsi }}</td>
+                    <td>{{ $s->stok_tanggal }}</td>
+                    <td>{{ $s->stok_jumlah }}</td>
+                    <td>{{ $s->supplier->supplier_nama }}</td>
+                    <td>{{ $s->barang->barang_nama }}</td>
+                    <td>{{ $s->user->nama }}</td>
                 </tr>
                 @endforeach
             </tbody>

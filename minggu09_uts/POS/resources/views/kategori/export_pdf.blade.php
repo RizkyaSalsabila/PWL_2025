@@ -111,8 +111,8 @@
                 @foreach($kategori as $k)
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $k->kode_kategori }}</td>
-                    <td>{{ $k->nama_kategori }}</td>
+                    <td>{{ $k->kategori_kode }}</td>
+                    <td>{{ $k->kategori_nama }}</td>
                     <td>{{ $k->deskripsi }}</td>
                 </tr>
                 @endforeach
