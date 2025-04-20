@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PenjualanDetailModel;
+use App\Models\StokModel;
 use App\Models\PenjualanModel;
+use App\Models\BarangModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -52,16 +55,16 @@ class PenjualanController extends Controller
 
         $breadcrumb = (object) [
             'title' => 'Transaksi Penjualan',
-            'list'  => ['Home', 'Transaksi']
+            'list'  => ['Home', 'Penjualan']
         ];
 
         $page = (object) [
-            'title' => 'Daftar Barang yang terdaftar dalam sistem'
+            'title' => 'Daftar Penjualan yang terdaftar dalam sistem'
         ];
 
         $activeMenu = 'penjualan';   //set menu yang sedang aktif
-
-        $penjualan = PenjualanModel::all();     //ambil data level untuk filter level
+        $user = UserModel::whereIn('level_id', [1, 2, 3])->get();
+        // $penjualan = PenjualanModel::all();     //ambil data level untuk filter level
 
         return view(
             'penjualan.index', 
@@ -69,7 +72,7 @@ class PenjualanController extends Controller
                 'breadcrumb' => $breadcrumb, 
                 'page'       => $page,
                 'activeMenu' => $activeMenu,
-                'penjualan' => $penjualan
+                'user'       => $user
                 ]
         );
     }  
@@ -94,6 +97,7 @@ class PenjualanController extends Controller
                 $btn  = '<button onclick="modalAction(\''.url('/penjualan/' . $penjualan->penjualan_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
                 $btn .= '<button onclick="modalAction(\''.url('/penjualan/' . $penjualan->penjualan_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\''.url('/penjualan/' . $penjualan->penjualan_id . '/delete_ajax').'\')"  class="btn btn-danger btn-sm">Hapus</button> '; 
+                $btn .= '<a href="' . url('/penjualan/' . $penjualan->penjualan_id . '/struk_pdf') . '" target="_blank" class="btn btn-success btn-sm">Cetak Struk</a>';
 
                 return $btn;
             })
@@ -106,9 +110,19 @@ class PenjualanController extends Controller
     // -- ------------------------------------- *jobsheet 06* ------------------------------------- --
     // JS6 - P1(tambah_ajax)
     public function create_ajax() {
-        $user = UserModel::select('user_id', 'nama')->get();
+        $barang = BarangModel::whereIn('barang_id', function ($query) {
+            $query->select('barang_id')
+                ->from('t_stok')
+                ->where('stok_jumlah', '>', 0);
+        })->get(); // cuma barang yang ada stoknya yang ditampilin
 
-        return view('penjualan.create_ajax')->with('user', $user);
+        $user = Auth::user(); // ambil user yang login
+        $kode = 'PNJ0' . PenjualanModel::orderBy('penjualan_id', 'desc')->value('penjualan_id') + 1;
+
+        return view('penjualan.create_ajax')
+             ->with('barang', $barang)
+             ->with('user', $user)
+             ->with('kode', $kode);
     }
 
     // JS6 - P1(tambah_ajax)
@@ -116,10 +130,13 @@ class PenjualanController extends Controller
         // cek apakah request berupa ajax
         if($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'penjualan_kode'  => 'required|string|max:20|unique:t_penjualan,penjualan_kode',     
-                'penjualan_tanggal'  => 'required|date',   
-                'pembeli'   => 'required|string|max:50',   
-                'user_id'   => 'required|integer|exists:m_user,user_id',    
+                'user_id' => 'required|exists:m_user,user_id',
+                'pembeli' => 'required|max:40',
+                'penjualan_kode' => 'required|max:20',
+                'penjualan_tanggal' => 'required|date',
+                'barang_id' => 'required|array',
+                'harga' => 'required|array',
+                'jumlah' => 'required|array'   
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -131,25 +148,104 @@ class PenjualanController extends Controller
                     'msgField' => $validator->errors(), // pesan error validasi
                 ]);
             }
-    
-            PenjualanModel::create($request->all()); 
+
+            try {
+                DB::beginTransaction();
+
+                // Simpan ke t_penjualan
+                $penjualan = PenjualanModel::create([
+                    'user_id' => $request->user_id,
+                    'pembeli' => $request->pembeli,
+                    'penjualan_kode' => $request->penjualan_kode,
+                    'penjualan_tanggal' => $request->penjualan_tanggal,
+                ]);
+
+                // Loop dan simpan ke t_penjualan_detail
+                foreach ($request->barang_id as $i => $barang_id) {
+                    PenjualanDetailModel::create([
+                        'penjualan_id' => $penjualan->penjualan_id,
+                        'barang_id' => $barang_id,
+                        'harga' => $request->harga[$i],
+                        'jumlah' => $request->jumlah[$i],
+                    ]);
+
+                    // kurangi stok
+                    $stok = StokModel::where('barang_id', $barang_id)->first();
+                    if ($stok) {
+                        if ($stok->stok_jumlah >= $request->jumlah[$i]) {
+                            $stok->stok_jumlah -= $request->jumlah[$i];
+                            $stok->save();
+                        } else {
+                            // rollback jika stok tidak mencukupi
+                            DB::rollBack();
+                            return response()->json([
+                                'status' => false,
+                                'message' => 'Stok barang ' . $stok->barang->barang_nama . ' tidak mencukupi'
+                            ]);
+                        }
+                    } else {
+                        // rollback jika stok tidak ditemukan
+                        DB::rollBack();
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Stok untuk barang tidak ditemukan'
+                        ]);
+                    }
+                }
+ 
+                DB::commit();
 
             return response()->json([
                 'status' => true,
-                'message' => 'Data penjualan berhasil disimpan'
+                'message' => 'Data Penjualan dan Detail berhasil disimpan'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan saat menyimpan: ' . $e->getMessage()
             ]);
         }
-    
-        redirect('/');
+    }
+    return redirect('/');
+    }
+
+    public function store_detail_ajax(Request $request)
+    {
+        $rules = [
+            'harga' => 'required|numeric|min:1',
+            'jumlah' => 'required|integer|min:1',
+            'penjualan_id' => 'required|exists:t_penjualan,penjualan_id',
+            'barang_id' => 'required|exists:m_barang,barang_id'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi gagal',
+                'msgField' => $validator->errors()
+            ]);
+        }
+
+        PenjualanDetailModel::create($request->all());
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Transaksi Penjualan Berhasil disimpan'
+        ]);
     }
 
     // JS6 - P2(edit_ajax)
     //menampilkan halaman form edit penjualan ajax
     public function edit_ajax(string $id) {
         $penjualan = PenjualanModel::find($id);
-        $user = UserModel::select('user_id', 'nama')->get();
+        $barang = BarangModel::all();
+        $user = Auth::user();
 
-        return view('penjualan.edit_ajax', ['penjualan' => $penjualan, 'user' => $user]);
+        return view('penjualan.edit_ajax', ['penjualan' => $penjualan, 'barang' => $barang, 'user' => $user]);
     }
 
     // JS6 - P2(edit_ajax)
@@ -157,7 +253,6 @@ class PenjualanController extends Controller
         // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'penjualan_kode'     => 'required|string|max:20|unique:t_penjualan,penjualan_kode,' . $id . ',penjualan_id',     
                 'penjualan_tanggal'  => 'required|date',   
                 'pembeli'            => 'required|string|max:50',   
                 'user_id'            => 'required|integer|exists:m_user,user_id',  
@@ -173,28 +268,36 @@ class PenjualanController extends Controller
                 ]);
             }
 
-            $check = PenjualanModel::find($id);
-            if ($check) {
-                $check->update($request->all());
+            try {
+                $penjualan = PenjualanModel::findOrFail($id);
+                $penjualan->update([
+                    'user_id' => $request->user_id,
+                    'pembeli' => $request->pembeli,
+                    'penjualan_tanggal' => $request->penjualan_tanggal
+                ]);
+
                 return response()->json([
                     'status' => true,
-                    'message' => 'Data berhasil diupdate'
+                    'message' => 'Data penjualan berhasil diupdate.'
                 ]);
-            } else {
+            } catch (\Exception $e) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data tidak ditemukan'
+                    'message' => 'Gagal menyimpan data.',
+                    'msgField' => ['exception' => [$e->getMessage()]]
                 ]);
             }
         }
+ 
         return redirect('/');
     }
 
     // JS6 - P3(hapus_ajax)
     public function confirm_ajax(string $id) {
         $penjualan = PenjualanModel::find($id);
+        $penjualanDetail = PenjualanDetailModel::find($penjualan->penjualan_id);
 
-        return view('penjualan.confirm_ajax', ['penjualan' => $penjualan]);
+        return view('penjualan.confirm_ajax', ['penjualan' => $penjualan, 'penjualanDetail' => $penjualanDetail]);
      }
 
     // JS6 - P3(hapus_ajax)
@@ -203,11 +306,22 @@ class PenjualanController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $penjualan = PenjualanModel::find($id);
             if ($penjualan) {
-                $penjualan->delete();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil dihapus'
-                ]);
+
+                try {
+                    // Hapus dulu semua detail yang terkait
+                    $penjualan->detail()->delete(); // Pastikan relasi 'detail' ada di model
+                    // Baru hapus data induknya
+                    $penjualan->delete();
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data berhasil dihapus'
+                    ]);
+                } catch (\Illuminate\Database\QueryException $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Data tidak bisa dihapus'
+                    ]);
+                }
             } else {
                 return response()->json([
                     'status' => false,
@@ -221,8 +335,9 @@ class PenjualanController extends Controller
     // JS6 - (show_ajax)
     public function show_ajax(string $id) {
         $penjualan = PenjualanModel::with('user')->find($id);
+        $detail = PenjualanDetailModel::where('penjualan_id', $penjualan->id)->get();
 
-        return view('penjualan.show_ajax', ['penjualan' => $penjualan]);
+        return view('penjualan.show_ajax', ['penjualan' => $penjualan, 'detail' => $detail]);
     }
     // -- ----------------------------------------------------------------------------------------- --
 
@@ -234,13 +349,14 @@ class PenjualanController extends Controller
             'pembeli',
             'user_id'
         )
-            ->orderBy('penjualan_id')
             ->orderBy('penjualan_kode')
+            ->with('user')
             ->get();
 
+        $detail = PenjualanDetailModel::all();
 
         // use Barryvdh\DomPDF\Facade\Pdf;
-        $pdf = PDF::loadView('penjualan.export_pdf', ['penjualan' => $penjualan]);
+        $pdf = PDF::loadView('penjualan.export_pdf', ['penjualan' => $penjualan,  'detail' => $detail]);
         $pdf->setPaper('A4', 'portrait'); // set ukuran kertas dan orientasi
         $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
         $pdf->render(); // render pdf
@@ -307,4 +423,12 @@ class PenjualanController extends Controller
         $writer->save('php://output');      // simpan file langsung ke output browser
         exit;       // hentikan eksekusi agar tidak lanjut render halaman lain
     } // end function export_excel
+
+    public function struk_pdf($id) {
+        $penjualan = PenjualanModel::with(['penjualan_detail.barang', 'user'])->findOrFail($id);
+
+        $pdf = Pdf::loadView('penjualan.struk_pdf', compact('penjualan'));
+        $pdf->setPaper([0, 0, 226.77, 600], 'portrait'); // ukuran struk kecil
+        return $pdf->stream('Struk_Penjualan_' . $penjualan->penjualan_kode . '.pdf');
+    }
 }

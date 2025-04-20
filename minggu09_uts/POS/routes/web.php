@@ -61,7 +61,7 @@ Route::get('/barang', [BarangController::class, 'index']);
 Route::get('/supplier', [SupplierController::class, 'index']);
 Route::get('/stok', [StokController::class, 'index']);
 Route::get('/penjualan', [PenjualanController::class, 'index']);
-Route::get('/penjualan_detail', [PenjualanDetailController::class, 'index']);
+// Route::get('/penjualan_detail', [PenjualanDetailController::class, 'index']);
 // -- ----------------------------------------------------------------------------------------- --
 
 // -- ------------------------------------- *jobsheet 05* ------------------------------------- --
@@ -379,7 +379,7 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         // JS6 - P1(tambah_ajax)
         Route::get('/create_ajax', [PenjualanController::class, 'create_ajax']);     //menampilkan halaman form tambah penjualan ajax
         Route::post('/ajax', [PenjualanController::class, 'store_ajax']);            //menyimpan data penjualan baru ajax
-    
+
         // JS6 - P2(edit_ajax)
         Route::get('/{id}/edit_ajax', [PenjualanController::class, 'edit_ajax']);    //menampilkan halaman form edit penjualan ajax
         Route::put('/{id}/update_ajax', [StokController::class, 'update_ajax']);    //menyimpan perubahan data penjualan ajax
@@ -396,5 +396,7 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         
         // JS8 - (export_excel)
         Route::get('/export_excel', [PenjualanController::class, 'export_excel']);         //export_excel
+
+        Route::get('/{id}/struk_pdf', [PenjualanController::class, 'struk_pdf'])->name('penjualan.struk_pdf');         //struk_pdf
     });   
 });
