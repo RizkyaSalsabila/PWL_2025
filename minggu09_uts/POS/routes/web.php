@@ -233,6 +233,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
 
         // JS8 - (export_pdf)
         Route::get('/export_pdf', [UserController::class, 'export_pdf']);         //export_pdf
+
+        // JS8 - (export_excel)
+        Route::get('/export_excel', [UserController::class, 'export_excel']);         //export_excel
     });
     
     // Route::group(['prefix' => 'level'], function () {
@@ -256,7 +259,10 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         Route::get('/{id}/show_ajax', [LevelController::class, 'show_ajax']);        //menampilkan detail level ajax
     
         // JS8 - (export_pdf)
-        Route::get('/export_pdf', [LevelController::class, 'export_pdf']);         //export_pdf     
+        Route::get('/export_pdf', [LevelController::class, 'export_pdf']);         //export_pdf    
+        
+        // JS8 - (export_excel)
+        Route::get('/export_excel', [LevelController::class, 'export_excel']);         //export_excel
     });
     
     // Route::group(['prefix' => 'kategori'], function () {
@@ -281,6 +287,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
 
         // JS8 - (export_pdf)
         Route::get('/export_pdf', [KategoriController::class, 'export_pdf']);         //export_pdf
+
+        // JS8 - (export_excel)
+        Route::get('/export_excel', [KategoriController::class, 'export_excel']);         //export_excel
     });
     
     // Route::group(['prefix' => 'supplier'], function () {
@@ -305,6 +314,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
 
         // JS8 - (export_pdf)
         Route::get('/export_pdf', [SupplierController::class, 'export_pdf']);         //export_pdf
+
+        // JS8 - (export_excel)
+        Route::get('/export_excel', [SupplierController::class, 'export_excel']);         //export_excel
     });
     
     // Route::group(['prefix' => 'barang'], function () {
@@ -329,6 +341,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
         
         // JS8 - (export_pdf)
         Route::get('/export_pdf', [BarangController::class, 'export_pdf']);         //export_pdf
+
+        // JS8 - (export_excel)
+        Route::get('/export_excel', [BarangController::class, 'export_excel']);         //export_excel
     });
     
     Route::group(['prefix' => 'stok'], function () {
@@ -352,6 +367,9 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
 
         // JS8 - (export_pdf)
         Route::get('/export_pdf', [StokController::class, 'export_pdf']);         //export_pdf
+
+        // JS8 - (export_excel)
+        Route::get('/export_excel', [StokController::class, 'export_excel']);         //export_excel
     });   
 
     Route::group(['prefix' => 'penjualan'], function () {
@@ -375,5 +393,8 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
 
         // JS8 - (export_pdf)
         Route::get('/export_pdf', [PenjualanController::class, 'export_pdf']);         //export_pdf
+        
+        // JS8 - (export_excel)
+        Route::get('/export_excel', [PenjualanController::class, 'export_excel']);         //export_excel
     });   
 });

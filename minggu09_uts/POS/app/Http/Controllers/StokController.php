@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class StokController extends Controller
 {
@@ -264,7 +265,7 @@ class StokController extends Controller
         ->orderBy('stok_tanggal')
         ->with(['supplier', 'barang', 'user'])
         ->get();
-        
+
         $pdf = PDF::loadView('stok.export_pdf', ['stok' => $stok]);
         $pdf->setPaper('A4', 'portrait'); // set ukuran kertas dan orientasi
         $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
@@ -272,4 +273,66 @@ class StokController extends Controller
 
         return $pdf->stream('Data Stok Barang '.date('Y-m-d H-i-s').'.pdf');
     }
+
+    public function export_excel() {
+        //ambil data stok beserta relasinya yang akan di export
+        $stok = StokModel::select('stok_tanggal', 'stok_jumlah', 'supplier_id', 'barang_id', 'user_id')
+                    ->orderBy('stok_tanggal')        // urutkan berdasarkan stok_tanggal
+                    ->with(['supplier', 'barang', 'user'])              // ambil relasi 
+                    ->get();
+
+        // load library excel atau PhpSpreadsheet
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();   // ambil sheet yang aktif untuk digunakan
+
+        // set header kolom di baris pertama
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Tanggal');
+        $sheet->setCellValue('C1', 'Jumlah');
+        $sheet->setCellValue('D1', 'Nama Supplier');
+        $sheet->setCellValue('E1', 'Nama Barang');
+        $sheet->setCellValue('F1', 'Nama User');
+
+        // buat teks di header menjadi bold
+        $sheet->getStyle('A1:F1')->getFont()->setBold(true);   // bold header
+
+        $no = 1;         // nomor data dimulai dari 1
+        $baris = 2;      // baris data dimulai dari baris ke 2
+        // loop untuk menuliskan data ke dalam sheet
+        foreach ($stok as $key => $value) {
+            $sheet->setCellValue('A' . $baris, $no);  
+            $sheet->setCellValue('B' . $baris, $value->stok_tanggal); 
+            $sheet->setCellValue('C' . $baris, $value->stok_jumlah);   
+            $sheet->setCellValue('D' . $baris, $value->supplier->supplier_nama);   
+            $sheet->setCellValue('E' . $baris, $value->barang->barang_nama);  
+            $sheet->setCellValue('F' . $baris, $value->user->nama); 
+            $baris++;   // pindah ke baris berikutnya
+            $no++;      // tambah nomor urut
+        }
+
+        // atur ukuran kolom agar menyesuaikan isi secara otomatis
+        foreach (range('A', 'F') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true); // set auto size untuk kolom
+        }
+
+        // set nama sheet
+        $sheet->setTitle('Data Stok'); // set title sheet
+
+        // buat writer untuk menyimpan spreadsheet ke format Excel (.xlsx)
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data Stok ' . date('Y-m-d H:i:s') . '.xlsx';
+
+        // set header HTTP agar browser tahu ini file Excel dan langsung mendownload
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0'); 
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+
+        $writer->save('php://output');      // simpan file langsung ke output browser
+        exit;       // hentikan eksekusi agar tidak lanjut render halaman lain
+    } // end function export_excel
 }

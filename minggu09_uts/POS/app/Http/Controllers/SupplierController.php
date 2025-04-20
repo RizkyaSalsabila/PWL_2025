@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class SupplierController extends Controller
 {
@@ -234,4 +234,62 @@ class SupplierController extends Controller
         // tampilkan PDF di browser (stream), nama file dinamis berdasarkan tanggal & jam
         return $pdf->stream('Data Supplier '.date('Y-m-d H:i:s').'.pdf');
     }
+
+    public function export_excel() {
+        //ambil data supplier yang akan di export
+        $supplier = SupplierModel::select('supplier_kode', 'supplier_nama', 'supplier_alamat', 'supplier_no_hp')
+                    ->get();
+
+        // load library excel atau PhpSpreadsheet
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();   // ambil sheet yang aktif untuk digunakan
+
+        // set header kolom di baris pertama
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Kode Supplier');
+        $sheet->setCellValue('C1', 'Nama Supplier');
+        $sheet->setCellValue('D1', 'Alamat Supplier');
+        $sheet->setCellValue('E1', 'No HP Supplier');
+
+        // buat teks di header menjadi bold
+        $sheet->getStyle('A1:E1')->getFont()->setBold(true);   // bold header
+
+        $no = 1;         // nomor data dimulai dari 1
+        $baris = 2;      // baris data dimulai dari baris ke 2
+        // loop untuk menuliskan data ke dalam sheet
+        foreach ($supplier as $key => $value) {
+            $sheet->setCellValue('A' . $baris, $no);    // No
+            $sheet->setCellValue('B' . $baris, $value->supplier_kode);    // Kode Supplier
+            $sheet->setCellValue('C' . $baris, $value->supplier_nama);    // Nama Supplier
+            $sheet->setCellValue('D' . $baris, $value->supplier_alamat);    // Alamat Supplier
+            $sheet->setCellValue('E' . $baris, $value->supplier_no_hp);    // No HP Supplier
+            $baris++;   // pindah ke baris berikutnya
+            $no++;      // tambah nomor urut
+        }
+
+        // atur ukuran kolom agar menyesuaikan isi secara otomatis
+        foreach (range('A', 'E') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true); // set auto size untuk kolom
+        }
+
+        // set nama sheet
+        $sheet->setTitle('Data Supplier'); // set title sheet
+
+        // buat writer untuk menyimpan spreadsheet ke format Excel (.xlsx)
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data Supplier ' . date('Y-m-d H:i:s') . '.xlsx';
+
+        // set header HTTP agar browser tahu ini file Excel dan langsung mendownload
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0'); 
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+
+        $writer->save('php://output');      // simpan file langsung ke output browser
+        exit;       // hentikan eksekusi agar tidak lanjut render halaman lain
+    } // end function export_excel
 }
