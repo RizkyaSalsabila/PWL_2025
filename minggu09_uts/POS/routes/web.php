@@ -334,5 +334,25 @@ Route::middleware(['auth'])->group(function() {     //artinya, semua route di da
     
         // JS6 - (show_ajax)
         Route::get('/{id}/show_ajax', [StokController::class, 'show_ajax']);        //menampilkan detail stok ajax
-    });    
+    });   
+
+    Route::group(['prefix' => 'penjualan'], function () {
+        Route::get('/', [PenjualanController::class, 'index']);      //menampilkan halaman penjualan
+        Route::post('/list', [PenjualanController::class, 'list']);      //menampilkan data penjualan dalam bentuk json untuk datatables
+     
+        // JS6 - P1(tambah_ajax)
+        Route::get('/create_ajax', [PenjualanController::class, 'create_ajax']);     //menampilkan halaman form tambah penjualan ajax
+        Route::post('/ajax', [PenjualanController::class, 'store_ajax']);            //menyimpan data penjualan baru ajax
+    
+        // JS6 - P2(edit_ajax)
+        Route::get('/{id}/edit_ajax', [PenjualanController::class, 'edit_ajax']);    //menampilkan halaman form edit penjualan ajax
+        Route::put('/{id}/update_ajax', [StokController::class, 'update_ajax']);    //menyimpan perubahan data penjualan ajax
+    
+        // JS6 - P3(hapus_ajax)
+        Route::get('/{id}/delete_ajax', [PenjualanController::class, 'confirm_ajax']);       //menampilkan form confirm delete penjualan ajax
+        Route::delete('/{id}/delete_ajax', [PenjualanController::class, 'delete_ajax']);     //menghapus data penjualan ajax
+    
+        // JS6 - (show_ajax)
+        Route::get('/{id}/show_ajax', [PenjualanController::class, 'show_ajax']);        //menampilkan detail penjualan ajax
+    });   
 });
