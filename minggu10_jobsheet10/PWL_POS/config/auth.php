@@ -35,11 +35,16 @@ return [
     |
     */
 
+    //JS 10 - P1(Restful API Register)
     'guards' => [
         'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+            'driver'    => 'session',
+            'provider'  => 'users',
         ],
+        'api' => [
+            'driver'    => 'jwt',
+            'provider'  => 'users',
+        ]
     ],
 
     /*

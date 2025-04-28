@@ -6,11 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable; 
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class UserModel extends Authenticatable 
+class UserModel extends Authenticatable implements JWTSubject
 // class UserModel extends Model
 {
+    // ------------------------------------- *jobsheet 10* -------------------------------------
+    // JS10 - P1(Restful API Register)
+    public function getJWTIdentifier() {     //untuk memberikan JWT id unik user
+        return $this->getKey();             
+    }
+
+    public function getJWTCustomClaims() {  //untuk memberikan tambahan data ke token JWT
+        return [];                          //[] berarti tidak ada tambahan data
+    }
+
     use HasFactory;
     // ------------------------------------- *jobsheet 03* -------------------------------------
     // JS3 - P6(Eloquent ORM)

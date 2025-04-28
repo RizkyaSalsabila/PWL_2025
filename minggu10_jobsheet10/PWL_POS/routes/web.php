@@ -10,10 +10,6 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PenjualanController;
-use App\Http\Controllers\PenjualanDetailController;
-use App\Http\Controllers\ProductsController;
-use App\Http\Controllers\SalesController;
-
 use Illuminate\Support\Facades\Route;
 
 /*
