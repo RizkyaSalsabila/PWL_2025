@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\LevelController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\BarangController;
 use App\Models\KategoriModel;
 
 /*
@@ -58,3 +59,10 @@ Route::post('kategoris', [KategoriController::class, 'store']);
 Route::get('kategoris/{kategori}', [KategoriController::class, 'show']);
 Route::put('kategoris/{kategori}', [KategoriController::class, 'update']);
 Route::delete('kategoris/{kategori}', [KategoriController::class, 'destroy']);
+
+// JS10 - Tugas(CRUD Restful API - barang)
+Route::get('barangs', [BarangController::class, 'index']);
+Route::post('barangs', [BarangController::class, 'store']);
+Route::get('barangs/{barang}', [BarangController::class, 'show']);
+Route::put('barangs/{barang}', [BarangController::class, 'update']);
+Route::delete('barangs/{barang}', [BarangController::class, 'destroy']);
