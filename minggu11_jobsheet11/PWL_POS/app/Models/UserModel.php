@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class UserModel extends Authenticatable implements JWTSubject
 // class UserModel extends Model
@@ -38,6 +39,7 @@ class UserModel extends Authenticatable implements JWTSubject
         'nama',
         'password',
         'profile_photo',
+        'image',    // JS11 - P1(Eloquent Accessor)
         'created_at',
         'updated_at'  
     ];
@@ -79,5 +81,12 @@ class UserModel extends Authenticatable implements JWTSubject
 
     public function penjualan(): HasMany {
         return $this->hasMany(PenjualanModel::class, 'user_id', 'user_id');
+    }
+
+    // JS11 - P1(Eloquent Accessor)
+    protected function image(): Attribute {
+        return Attribute::make(
+            get: fn ($image) => url('/storage/posts/' . $image),
+        );
     }
 }

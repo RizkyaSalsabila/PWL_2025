@@ -29,6 +29,8 @@ use App\Models\KategoriModel;
 // -- ------------------------------------- *jobsheet 10* ------------------------------------- --
 // JS10 - P1(Restful API Register)
 Route::post('/register', RegisterController::class)->name('register');
+// JS11 - P1(Eloquent Accessor)
+Route::post('/register1', RegisterController::class)->name('register1');
 
 // JS10 - P2(Restful API Login)
 Route::post('/login', LoginController::class)->name('login');
