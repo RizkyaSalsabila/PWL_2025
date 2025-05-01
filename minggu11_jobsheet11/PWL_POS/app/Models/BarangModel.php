@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class BarangModel extends Model
 {
@@ -24,7 +26,8 @@ class BarangModel extends Model
         'barang_kode', 
         'barang_nama', 
         'harga_beli', 
-        'harga_jual'   
+        'harga_jual',
+        'image'    // JS11 - Tugas(Eloquent Accessor) 
     ];
 
     // JS4 - 2(Relationship)
@@ -38,5 +41,12 @@ class BarangModel extends Model
 
     public function penjualan_detail(): HasMany {
         return $this->hasMany(PenjualanDetailModel::class, 'barang_id', 'barang_id');
+    }
+
+    // JS11 - Tugas(Eloquent Accessor)
+    protected function image(): Attribute {
+        return Attribute::make(
+            get: fn ($image) => url('/storage/posts/' . $image),
+        );
     }
 }
